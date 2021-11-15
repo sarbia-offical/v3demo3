@@ -1,0 +1,166 @@
+.singers {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  .currentTitle{
+    position: fixed;
+    right: .1rem;
+    top: 40%;
+    width: .7rem;
+    height: .7rem;
+    border-radius: 20%;
+    @include shadow2-1();
+    transition: box-shadow .2s ease-out;
+    z-index: 9999;
+    @include aic_jcc();
+    background-color: $color-text-default;
+    color: $color-text;
+    font-family: hyxhkj;
+  }
+  .currentTitle:active{
+    @include shadow2-2();
+  }
+  .pic{
+    @include pic();
+  }
+  .singerTop{
+    flex: 0 0 8%;
+  }
+  .singerSlide{
+    flex: 0 0 20%;
+    .singerSlide-top{
+      color: $color-text-default;
+      display: flex;
+      justify-content: space-between;
+      width: 85%;
+      font-size: 0.3rem;
+      margin: 0 auto;
+      margin-bottom: 0.15rem;
+    }
+    .singerSlide-wrapper{
+      margin: 0 auto;
+      width: 95%;
+      white-space: nowrap;
+      overflow: hidden;
+      .singerSlide-content{
+        display: inline-block;
+        padding: 0.3rem;
+        .singerSlide-item{
+          width: 25vw;
+          height: 2.5rem;
+          display: inline-block;
+          text-align: center;
+          background-color: $color-text-lightGray;
+          margin-left: 0.225rem;
+          border-radius: 5px;
+          box-shadow: 1px 3px 5px rgba(0,0,0,0.1), 1px 3px 15px rgba(255,255,255,1);
+          .singerSlide-info{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 2.5rem;
+            justify-content: space-evenly;
+            .singer{
+              font-size: 0.225rem;
+            }
+            .icon{
+              @include shadow2-1();
+              padding: 0.1rem;
+              border-radius: 50%;
+              transition: box-shadow .2s ease-out;
+              margin-top: .1rem;
+            }
+            .icon-active{
+              padding: 0.1rem;
+              border-radius: 50%;
+              @include shadow2-2();
+              margin-top: .1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .singerClassify{
+    flex: 0 0 13%;
+    overflow: hidden;
+    .classify1{
+      margin: 0 auto;
+      margin-top: .5rem;
+      width: 90%;
+      @include aic_fs();
+      font-size: 0.25rem;
+      .item{
+        margin-left: .25rem;
+        color: $color-text-default;
+      }
+      .active{
+        color: #f31010;
+      }
+    }
+  }
+  .list{
+    flex: 0 0 55%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: .2rem;
+    position: relative;
+    .list-content{
+      .list-item{
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0.28rem;
+        text-align: center;
+        color: $explain-text-color;
+        margin-top: .1rem;
+        .title{
+          width: 100%;
+          height: .7rem;
+          display: flex;
+          align-items: center;
+          background-color: #eae6e6;
+          padding-left: .3rem;
+        }
+        .content{
+          padding: 0.325rem;
+          .singerInfo{
+            text-align: left;
+            line-height: .7rem;
+            display: flex;
+            margin-top: .3rem;
+            .pic{
+              width: 1rem;
+              height: 1rem;
+              img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+              }
+            }
+            .name{
+              margin-left: .5rem;
+              display: flex;
+              align-items: center;
+            }
+            .right{
+              flex: 1;
+              @include aic_jcf();
+              padding-right: 0.7rem
+            ;
+              .btn{
+                width: .6rem;
+                height: .6rem;
+                background-color: #f2d4a7;
+                border-radius: 50%;
+                @include aic_jcc();
+                @include shadow2-1();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

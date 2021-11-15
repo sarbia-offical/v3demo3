@@ -1,19 +1,14 @@
 <template>
-  <div class="singers">
-
+  <div class="HighqualityPlayList">
+    <div>
+      AAA
+    </div>
   </div>
 </template>
 <script>
-import { defineComponent } from 'vue';
-export default defineComponent({
-  name: 'HighqualityPlayList',
-  setup() {
-
-  }
-})
+import HighqualityPlayList from './index';
+export default HighqualityPlayList;
 </script>
 <style scoped lang="scss">
-  .singers {
-
-  }
+@import "./index.scss";
 </style>

@@ -29,7 +29,7 @@ export default defineComponent({
 <style scoped lang="scss">
   .iconComponent{
     .iconfont{
-      font-size: 0.5rem;
+      font-size: 100%;
     }
   }
 </style>

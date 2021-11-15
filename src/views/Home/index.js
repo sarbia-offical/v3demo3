@@ -1,14 +1,14 @@
-import {defineComponent, reactive, ref, onMounted} from 'vue';
-import headBar from './components/headBar/index.vue';
-import sidebarMenu from './components/sidebarMenu/index.vue';
-import homeService from '../../service/home.service';
+import {defineComponent, reactive, ref} from 'vue';
+import Body from './components/Body/index.vue';
+import SidebarMenu from './components/SidebarMenu/index.vue';
 export default defineComponent({
     name: 'Home',
     setup(){
         const circleRef = ref(null);
         const state = reactive({
             showLeft: false,
-            showRight: false
+            showRight: false,
+            list: []
         });
         const headBarLeftClick = () => {
             state.showLeft = true;
@@ -16,11 +16,6 @@ export default defineComponent({
         const headBarRightClick = () => {
             state.showRight = true;
         }
-        // mounted钩子函数
-        onMounted( async () => {
-            const res = await homeService.getSongsByName('sound of silence');
-            console.log(res)
-        })
         return {
             state,
             circleRef,
@@ -29,7 +24,7 @@ export default defineComponent({
         }
     },
     components: {
-        headBar,
-        sidebarMenu
+        Body,
+        SidebarMenu
     }
 })
