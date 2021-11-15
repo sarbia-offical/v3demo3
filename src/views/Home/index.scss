@@ -1,0 +1,16 @@
+.home{
+  position: relative;
+  .leftPopup{
+    background-color: #fffbf2;
+  }
+  .circle-ball{
+    width: 0.625rem;
+    height: 0.625rem;
+    position: fixed;
+    left: 7rem;
+    top: 3rem;
+    border-radius: 50%;
+    @include shadow();
+    z-index: 99999;
+  }
+}
