@@ -64,6 +64,13 @@
     </div>
     <div v-waiting:[waitingText]="{flag: waiting}"></div>
     <div class="currentTitle" v-if="!!titleIndex">{{ Object.keys(state.singerList)[titleIndex] }}</div>
+    <!--  快捷导航  -->
+    <div class="shortCut">
+      <shortCut
+        @itemClick="itemClick"
+        :singerList="state.singerList"
+        :titleIndex="titleIndex"></shortCut>
+    </div>
     <!--  歌手列表  -->
     <div class="list" ref="singerListRef">
       <div class="list-content">

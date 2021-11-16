@@ -216,7 +216,7 @@ export default defineComponent({
         })
         onMounted(async () => {
             initialList(listRef);
-            const { code, msg, result } = await homeService.getSongsByName('sound of slience');
+            const { code, msg, result } = await homeService.getSongsByName('yellow');
             console.log(result)
             bodyState.list = result.songs;
         })

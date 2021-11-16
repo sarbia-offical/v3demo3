@@ -5,17 +5,18 @@
   .currentTitle{
     position: fixed;
     right: .1rem;
-    top: 40%;
-    width: .7rem;
-    height: .7rem;
+    top: 45%;
+    width: .5rem;
+    height: .6rem;
     border-radius: 20%;
     @include shadow2-1();
     transition: box-shadow .2s ease-out;
-    z-index: 9999;
+    z-index: 9;
     @include aic_jcc();
     background-color: $color-text-default;
     color: $color-text;
     font-family: hyxhkj;
+    //transform: skewY(10deg);
   }
   .currentTitle:active{
     @include shadow2-2();
@@ -100,63 +101,61 @@
     }
   }
   .list{
-    flex: 0 0 55%;
+    flex: 1;
     width: 100%;
     overflow: hidden;
     margin: 0 auto;
     margin-top: .2rem;
     position: relative;
-    .list-content{
-      .list-item{
-        margin: 0 auto;
+    .list-item{
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 0.28rem;
+      text-align: center;
+      color: $explain-text-color;
+      margin-top: .1rem;
+      .title{
         width: 100%;
-        box-sizing: border-box;
-        font-size: 0.28rem;
-        text-align: center;
-        color: $explain-text-color;
-        margin-top: .1rem;
-        .title{
-          width: 100%;
-          height: .7rem;
+        height: .7rem;
+        display: flex;
+        align-items: center;
+        background-color: #eae6e6;
+        padding-left: .3rem;
+      }
+      .content{
+        padding: 0.325rem;
+        .singerInfo{
+          text-align: left;
           display: flex;
           align-items: center;
-          background-color: #eae6e6;
-          padding-left: .3rem;
-        }
-        .content{
-          padding: 0.325rem;
-          .singerInfo{
-            text-align: left;
-            line-height: .7rem;
+          height: 2rem;
+          .pic{
+            width: 1rem;
+            height: 1rem;
+            img{
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+          }
+          .name{
+            margin-left: .5rem;
             display: flex;
-            margin-top: .3rem;
-            .pic{
-              width: 1rem;
-              height: 1rem;
-              img{
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-              }
-            }
-            .name{
-              margin-left: .5rem;
-              display: flex;
-              align-items: center;
-            }
-            .right{
-              flex: 1;
-              @include aic_jcf();
-              padding-right: 0.7rem
-            ;
-              .btn{
-                width: .6rem;
-                height: .6rem;
-                background-color: #f2d4a7;
-                border-radius: 50%;
-                @include aic_jcc();
-                @include shadow2-1();
-              }
+            align-items: center;
+          }
+          .right{
+            flex: 1;
+            @include aic_jcf();
+            justify-content: flex-start;
+            padding-left: .5rem;
+            .btn{
+              width: .6rem;
+              height: .6rem;
+              background-color: #f2d4a7;
+              border-radius: 50%;
+              @include aic_jcc();
+              @include shadow2-1();
             }
           }
         }
