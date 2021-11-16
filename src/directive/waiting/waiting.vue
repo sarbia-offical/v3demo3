@@ -8,21 +8,23 @@
       <li></li>
       <li></li>
     </ul>
-    <div>
-      加载中
+    <div v-if="false">
+      {{ title }}
     </div>
   </div>
 </template>
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'waiting',
   setup(){
+    const title = ref('');
     const setTitle = (value) => {
-      console.log(value)
+      title.value = value;
     }
     return {
-      setTitle
+      setTitle,
+      title
     }
   }
 })

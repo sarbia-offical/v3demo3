@@ -1,5 +1,6 @@
 import { defineComponent, onMounted, watch, computed, ref, reactive, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import shortCut from './components/shortCut/shortCut.vue';
 import singerService from '@/service/singer.service';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
@@ -7,6 +8,9 @@ import ObserveDOM from '@better-scroll/observe-dom';
 BScroll.use(MouseWheel).use(ObserveDOM);
 export default defineComponent({
     name: 'Singers',
+    components: {
+        shortCut
+    },
     setup() {
         const state = reactive({
             artists: [],
@@ -74,6 +78,7 @@ export default defineComponent({
         const heightCount = ref(0);
         const scrollY = ref(0);
         const titleIndex = ref('');
+        let scrollInstance = null;
         // 监听
         watch(() => state.singerList, async (newVal, oldVal) => {
             await nextTick();
@@ -84,7 +89,7 @@ export default defineComponent({
             for(let i = 0; i < list.length - 1; i++){
                 let curretItem = list[i];
                 let nextItem = list[i+1];
-                if (newVal >= curretItem && newVal <= nextItem) {
+                if (newVal > curretItem && newVal < nextItem) {
                     titleIndex.value = i;
                 }
             }
@@ -115,6 +120,8 @@ export default defineComponent({
             })
             getArtist();
             getTopArtists();
+            console.log(singerList)
+            scrollInstance = singerList;
         });
         // 监听每个item的高度
         const calcSingerListHeight = () => {
@@ -177,6 +184,12 @@ export default defineComponent({
             })
             state.artists = artists;
         }
+        const itemClick = (event) => {
+            let elements = singerListRef.value.children[0].children;
+            let ele = elements[event.dataset.index];
+            console.log(event.dataset.index)
+            scrollInstance.scrollToElement(ele, 0);
+        }
         const initialDomRef = (domRef, setting) => new BScroll(domRef.value, setting);
         return {
             onClickLeft,
@@ -185,6 +198,7 @@ export default defineComponent({
             artistClick,
             singerInfo,
             closePopup,
+            itemClick,
             singerListRef,
             singerSlideRef,
             state,
@@ -197,5 +211,5 @@ export default defineComponent({
             scrollY,
             titleIndex
         }
-    }
+    },
 })

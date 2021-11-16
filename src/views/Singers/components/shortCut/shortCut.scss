@@ -1,0 +1,26 @@
+.shortCut{
+  position: fixed;
+  right: .1rem;
+  top: 50%;
+  width: 1.5rem;
+  background: #f0eeee;
+  z-index: 9;
+  //transform: skewY(10deg);
+  border-radius: .13rem;
+  opacity: .7;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .shortCutItem{
+    flex: 0 0 20%;
+    font-size: .1rem;
+    padding: 0.1rem;
+    text-align: center;
+    transition: all .2s ease-in-out;
+  }
+  .shortCutItemActive{
+    color: $color-text;
+    background-color: #ffa500;
+    border-radius: .1rem;
+  }
+}
