@@ -6,10 +6,12 @@ import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
 BScroll.use(MouseWheel).use(ObserveDOM);
+import topNavBar from '@/components/topNavBar/index.vue';
 export default defineComponent({
     name: 'Singers',
     components: {
-        shortCut
+        shortCut,
+        topNavBar
     },
     setup() {
         const state = reactive({
@@ -64,7 +66,9 @@ export default defineComponent({
             singerList2: [],
             artists2: [],
             type: '-1',
-            area: '-1'
+            area: '-1',
+            singerDetail: {},
+            texts: ['热门歌手']
         });
         const router = useRouter();
         const route = useRoute();
@@ -107,7 +111,7 @@ export default defineComponent({
             // 初始化歌手列表滚动组件
             const singerList = initialDomRef(singerListRef, {
                 click: true,
-                probeType: 3,
+                probeType: 1,
                 mouseWheel: {
                     speed: 20,
                     invert: false,
@@ -134,11 +138,7 @@ export default defineComponent({
             })
         }
         // 返回事件
-        const onClickLeft = () => {
-            router.go(-1);
-        }
-        // 进入主页事件
-        const onClickRight = () => { router.push({ name: 'Home' }) }
+        const onClickLeft = () => {router.push({ name: 'Home' });}
         // 选择类型事件
         const chose = (typeName, value) => {
             state[typeName] = value;
@@ -146,9 +146,15 @@ export default defineComponent({
         }
         // 选择每日推荐歌手
         const artistClick = (item, index) => {
+            const { id } = item;
             topArtistIndex.value = index;
             setTimeout(() => {
                 artistFlag.value = true;
+                topArtistIndex.value = -1;
+                state.singerDetail = item;
+                router.push({
+                    path: `/SingerDetail/${item.id}`
+                })
             },250);
         }
         const closePopup = (item, index) => {
@@ -156,7 +162,10 @@ export default defineComponent({
         }
         const singerInfo = (item) => {
             artistFlag.value = true;
-            console.log(item);
+            state.singerDetail = item;
+            router.push({
+                path: `/SingerDetail/${item.id}`
+            })
         }
         const loading = computed(() => {
             return !state.artists.length;
@@ -187,13 +196,11 @@ export default defineComponent({
         const itemClick = (event) => {
             let elements = singerListRef.value.children[0].children;
             let ele = elements[event.dataset.index];
-            console.log(event.dataset.index)
             scrollInstance.scrollToElement(ele, 0);
         }
         const initialDomRef = (domRef, setting) => new BScroll(domRef.value, setting);
         return {
             onClickLeft,
-            onClickRight,
             chose,
             artistClick,
             singerInfo,
