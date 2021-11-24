@@ -3,7 +3,7 @@
     <div class="headBar">
       <div class="top">
         <iconComponent :iconPath="'icon-sucai'" :iconColor="'#36333f'" @click="headBarLeftClick"></iconComponent>
-        <div class="title">LazyBone</div>
+        <div class="title">寻找无双</div>
         <iconComponent :iconPath="'icon-shenglvehao'" :iconColor="'#36333f'" @click="headBarRightClick"></iconComponent>
       </div>
       <div class="body">

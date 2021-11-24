@@ -13,10 +13,12 @@
   flex-wrap: wrap;
   .shortCutItem{
     flex: 0 0 20%;
-    font-size: .1rem;
+    font-size: .2rem;
     padding: 0.1rem;
     text-align: center;
     transition: all .2s ease-in-out;
+    height: .3rem;
+    @include aic_jcc();
   }
   .shortCutItemActive{
     color: $color-text;

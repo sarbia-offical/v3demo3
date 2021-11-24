@@ -56,5 +56,21 @@ export default {
         url: '/api/top/artists',
         method: 'GET',
         params
+    }),
+
+    // 获取歌手单曲
+    _getSingerDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+        url: '/api/artists',
+        method: 'GET',
+        params: {
+            id: id
+        }
+    }),
+
+    // 获取歌手专辑
+    _getSingerAlbum: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+        url: '/api/artist/album',
+        method: 'GET',
+        params: params
     })
 }

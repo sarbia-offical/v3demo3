@@ -28,7 +28,7 @@
     flex: 0 0 8%;
   }
   .singerSlide{
-    flex: 0 0 20%;
+    flex: 0 0 15%;
     .singerSlide-top{
       color: $color-text-default;
       display: flex;
@@ -40,12 +40,13 @@
     }
     .singerSlide-wrapper{
       margin: 0 auto;
-      width: 95%;
+      width: 100%;
       white-space: nowrap;
       overflow: hidden;
       .singerSlide-content{
         display: inline-block;
         padding: 0.3rem;
+        overflow: hidden;
         .singerSlide-item{
           width: 25vw;
           height: 2.5rem;
@@ -83,13 +84,13 @@
     }
   }
   .singerClassify{
-    flex: 0 0 13%;
+    flex: 0 0 9%;
     overflow: hidden;
     .classify1{
       margin: 0 auto;
-      margin-top: .5rem;
+      margin-top: .2rem;
       width: 90%;
-      @include aic_fs();
+      display: flex;
       font-size: 0.25rem;
       .item{
         margin-left: .25rem;

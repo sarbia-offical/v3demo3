@@ -14,7 +14,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Singers',
     name: 'Singers',
-    component: () => import('@/views/Singers/index.vue')
+    component: () => import('@/views/Singers/index.vue'),
+    children: [
+      {
+        path: '/SingerDetail/:id',
+        component: () => import('@/views/Singers/children/SingerDetail/index.vue')
+      }
+    ]
   },
   {
     path: '/HighqualityPlayList',

@@ -2,14 +2,7 @@
   <div class="singers" v-loading:[loadingText]="{flag: loading}">
     <!--  推荐歌手  -->
     <div class="singerTop">
-      <van-navbar
-        title="热门歌手"
-        left-text="返回"
-        right-text="主页"
-        left-arrow
-        @click-left="onClickLeft"
-        @click-right="onClickRight"
-      ></van-navbar>
+      <topNavBar :texts="state.texts" @leftClick="onClickLeft"></topNavBar>
     </div>
     <div class="singerSlide">
       <div class="singerSlide-top">
@@ -102,19 +95,23 @@
       </div>
     </div>
     <!--  歌手详情  -->
-    <van-popup
-     v-model:show="artistFlag"
-     closeable
-     round
-     :style="{ height: '80%', width: '80%', padding: '5%' }"
-     @close="closePopup"
-    >内容</van-popup>
+<!--    <van-popup-->
+<!--     v-model:show="artistFlag"-->
+<!--     closeable-->
+<!--     round-->
+<!--     :style="{ height: '80%', width: '80%', padding: '5%' }"-->
+<!--     @close="closePopup"-->
+<!--    >内容</van-popup>-->
+    <!--  子路由  -->
+    <router-view :singer="state.singerDetail"></router-view>
   </div>
 </template>
+
 <script>
 import Singer from './index';
 export default Singer;
 </script>
+
 <style scoped lang="scss">
 @import "index";
 </style>
