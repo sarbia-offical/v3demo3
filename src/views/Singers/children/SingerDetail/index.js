@@ -1,4 +1,4 @@
-import {defineComponent, reactive, ref, onMounted, computed} from 'vue';
+import { defineComponent, reactive, ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import topNavBar from '@/components/topNavBar/index.vue';
 import SingerDetail from '@/service/singerDetail.service'
@@ -13,7 +13,7 @@ export default defineComponent({
     components: {
         topNavBar
     },
-    setup(props, { emit }){
+    setup(props, { emit }) {
         const loadingText = ref('歌手信息正在搜寻中');
         const topNavBarRef = ref(null);
         const bgImageRef = ref(null);
@@ -21,6 +21,17 @@ export default defineComponent({
         const navBarHeight = ref(0);
         const songsScrollRef = ref(null);
         const albumsScrollRef = ref(null);
+        const songsRef = ref(null);
+        const pullDown = ref(false);
+        let bgImageY = 0;
+        const startPoint = ref({
+            x: 0,
+            y: 0
+        });
+        const movePoint = ref({
+            x: 0,
+            y: 0
+        })
         const state = reactive({
             texts: ['歌手详情'],
             artist: {},
@@ -51,16 +62,31 @@ export default defineComponent({
                     easeTime: 300
                 },
                 observeDOM: true,
-                scrollbar: true
+                scrollbar: true,
+                stopPropagation: false
             };
             initialDomRef(songsScrollRef, options);
             initialDomRef(albumsScrollRef, options);
         })
         const loading = computed(() => !state.list.length);
+        // 图片背景样式
+        const bgImageStyle = computed(() => {
+            let num = (bgImageY + 10) / bgImageRef?.value?.clientHeight;
+            console.log(num >= 1);
+            let scale = pullDown.value && num >= 1 ? `scale(${num})` : 'scale(1)'
+            console.log(scale);
+            return {
+                backgroundImage: `url(${state.artist.img1v1Url})`,
+                paddingTop: '100%',
+                backgroundSize: 'cover',
+                transform: `${scale}`,
+                transition: 'all .1s linear'
+            }
+        })
         const router = useRouter();
         // 获取歌手相关信息
         const getSingerDetail = async (id) => {
-            const response = await SingerDetail.getSingerDetail(id+'');
+            const response = await SingerDetail.getSingerDetail(id + '');
             const { artist, hotSongs } = response;
             state.artist = artist;
             state.list = hotSongs;
@@ -78,39 +104,56 @@ export default defineComponent({
                 subType: item.subType
             }));
             state.ablumList = state.ablumList.concat(arr);
-            console.log(state.ablumList)
             return response;
         }
         // 返回事件
         const leftClick = () => {
             router.push({ name: 'Singers' })
         }
-        // 图片背景样式
-        const bgImageStyle = () => {
-            return {
-                backgroundImage: `url(${state.artist.img1v1Url})`,
-                paddingTop: '100%',
-                backgroundSize: 'cover'
+        // 歌曲和专辑框上拉开始事件
+        const touchStart = (event) => {
+            const { touches } = event;
+            startPoint.value['x'] = touches[0].pageX;
+            startPoint.value['y'] = touches[0].pageY - songsRef.value.offsetTop;
+        }
+        // 歌曲和专辑上拉移动事件
+        const touchMove = (event) => {
+            const { touches, target } = event;
+            let songsOffsetTop = songsRef.value.offsetTop;
+            let bodyOffsetHeight = document.body.offsetHeight;
+            bgImageY = touches[0].pageY;
+            console.log(target.className);
+            if (target.className != 'van-swipe-item') {
+                return;
+            }
+            if (parseInt(songsOffsetTop) >= (parseInt(bodyOffsetHeight / 2) + 10)) {
+                pullDown.value = true;
+            } else {
+                pullDown.value = false;
+            }
+            if (parseInt(songsOffsetTop) <= parseInt(bodyOffsetHeight / 1.8) && parseInt(songsOffsetTop) >= parseInt(document.body.offsetHeight / 3)) {
+                songsRef.value.style.top = touches[0].pageY - startPoint.value['y'] + 'px';
             }
         }
-        // 歌曲列表样式
-        const songsStyle = () => {
-            const height1 = imageHeight.value;
-            const height2 = navBarHeight.value;
-            return {
-                top: `50%`
+        // 停止事件
+        const touchDown = (event) => {
+            let bodyOffsetHeight = document.body.offsetHeight;
+            let songsOffsetTop = songsRef.value.offsetTop;
+            pullDown.value = false;
+            if (parseInt(songsOffsetTop) < parseInt(bodyOffsetHeight / 3)) {
+                songsRef.value.style.top = `${parseInt(bodyOffsetHeight / 3 + 1)}px`;
+            } else if (parseInt(songsOffsetTop) > parseInt(bodyOffsetHeight / 1.8)) {
+                songsRef.value.style.top = `${parseInt(bodyOffsetHeight / 2 + 1)}px`;
             }
         }
         // 生成bscrolldom
         const initialDomRef = (domRef, setting) => new BScroll(domRef.value, setting);
         // swipe的切换事件
         const swipeChange = (event) => {
-            console.log(event)
         }
         return {
             leftClick,
             bgImageStyle,
-            songsStyle,
             state,
             loading,
             loadingText,
@@ -118,7 +161,11 @@ export default defineComponent({
             bgImageRef,
             songsScrollRef,
             albumsScrollRef,
-            swipeChange
+            songsRef,
+            swipeChange,
+            touchStart,
+            touchMove,
+            touchDown
         }
     }
 })

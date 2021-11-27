@@ -111,7 +111,7 @@ export default defineComponent({
             // 初始化歌手列表滚动组件
             const singerList = initialDomRef(singerListRef, {
                 click: true,
-                probeType: 1,
+                probeType: 3,
                 mouseWheel: {
                     speed: 20,
                     invert: false,

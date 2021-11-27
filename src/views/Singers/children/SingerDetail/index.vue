@@ -2,16 +2,23 @@
   <div class="singerDetail">
     <topNavBar :texts="state.texts" @leftClick="leftClick" ref="topNavBarRef"></topNavBar>
     <div v-loading:[loadingText]="{flag: loading}"></div>
-    <div class="bg-image" :style="bgImageStyle()" ref="bgImageRef">
-      <div class="filter"></div>
-      <div class="singerInfo">
-        <p>{{ state.artist.name }}</p>
-        <div v-for="(item, index) in state.artist.alias" :key="index" class="artist">
-          <div>{{ item }}</div>
+    <div style="width: 100vw; overflow: hidden">
+      <div class="bg-image" :style="bgImageStyle" ref="bgImageRef">
+        <div class="filter"></div>
+        <div class="singerInfo">
+          <p>{{ state.artist.name }}</p>
+          <div v-for="(item, index) in state.artist.alias" :key="index" class="artist">
+            <div>{{ item }}</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="songs" :style="songsStyle()">
+    <div style="width: 100vw; overflow: hidden">
+      <div class="songs" 
+      @touchstart.prevent="touchStart" 
+      @touchmove.prevent="touchMove"
+      @touchend.prevent="touchDown"
+      ref="songsRef">
       <div class="singer-opus">
         <van-swipe :show-indicators="false" :loop="false" @change="swipeChange">
           <template #indicator="{ active }">
@@ -33,6 +40,14 @@
                     <div class="van-multi-ellipsis--l2">{{ item.name }}</div>
                     <div class="albumName">
                       <div class="van-multi-ellipsis--l2">{{ item['al'].name }}</div>
+                    </div>
+                  </div>
+                  <div class="other">
+                    <div class="loadMore">
+                      <iconComponent
+                        :iconPath="'icon-huiyuan_fill'"
+                        :iconColor="'#8b0000'">
+                      </iconComponent>
                     </div>
                   </div>
                 </div>
@@ -71,6 +86,7 @@
           </van-swipe-item>
         </van-swipe>
 
+      </div>
       </div>
     </div>
   </div>
