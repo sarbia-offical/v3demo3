@@ -71,10 +71,13 @@ export default defineComponent({
         const loading = computed(() => !state.list.length);
         // 图片背景样式
         const bgImageStyle = computed(() => {
-            let num = (bgImageY + 10) / bgImageRef?.value?.clientHeight;
-            console.log(num >= 1);
+            let num = bgImageY / bgImageRef?.value?.clientHeight;
             let scale = pullDown.value && num >= 1 ? `scale(${num})` : 'scale(1)'
-            console.log(scale);
+            let backDropFilter = !pullDown.value ? `backdropFilter(0px)` : `backdropFilter(0px)`
+            if(!pullDown.value){
+                console.log(bgImageY, bgImageRef?.value?.clientHeight);
+            }
+            console.log(backDropFilter);
             return {
                 backgroundImage: `url(${state.artist.img1v1Url})`,
                 paddingTop: '100%',
@@ -122,7 +125,6 @@ export default defineComponent({
             let songsOffsetTop = songsRef.value.offsetTop;
             let bodyOffsetHeight = document.body.offsetHeight;
             bgImageY = touches[0].pageY;
-            console.log(target.className);
             if (target.className != 'van-swipe-item') {
                 return;
             }
