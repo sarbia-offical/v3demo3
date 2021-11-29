@@ -74,10 +74,6 @@ export default defineComponent({
             let num = bgImageY / bgImageRef?.value?.clientHeight;
             let scale = pullDown.value && num >= 1 ? `scale(${num})` : 'scale(1)'
             let backDropFilter = !pullDown.value ? `backdropFilter(0px)` : `backdropFilter(0px)`
-            if(!pullDown.value){
-                console.log(bgImageY, bgImageRef?.value?.clientHeight);
-            }
-            console.log(backDropFilter);
             return {
                 backgroundImage: `url(${state.artist.img1v1Url})`,
                 paddingTop: '100%',
