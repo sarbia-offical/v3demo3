@@ -162,27 +162,32 @@
           }
         }
         .swipe-indicator{
-        width: 90%;
-        position: absolute;
-        top: 0.15rem;
-        text-align: center;
-        display: flex;
-        margin-left: 5%;
-        .indicator{
-          font-size: .3rem;
-          font-family: hyxhkj;
-          transition: all .4s ease-in-out;
-          background-color: $color-text-lightGray;
-          padding: 0.125rem;
-          box-sizing: border-box;
+          width: 90%;
+          position: absolute;
+          top: 0.15rem;
+          text-align: center;
+          display: flex;
+          margin-left: 5%;
+          .swipe-icon{
+            position: absolute;
+            left: 50%;
+            top: 10%;
+          }
+          .indicator{
+            font-size: .3rem;
+            font-family: hyxhkj;
+            transition: all .4s ease-in-out;
+            background-color: $color-text-lightGray;
+            padding: 0.125rem;
+            box-sizing: border-box;
+          }
+          .indicator ~ .indicator{
+            margin-left: .2rem;
+          }
+          .indicatorActive{
+            background-color: $color-theme-d;
+          }
         }
-        .indicator ~ .indicator{
-          margin-left: .2rem;
-        }
-        .indicatorActive{
-          background-color: $color-theme-d;
-        }
-      }
       }
     }
   }

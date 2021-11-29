@@ -15,7 +15,7 @@
     </div>
     <div style="width: 100vw; overflow: hidden">
       <div class="songs" 
-      @touchstart.prevent="touchStart" 
+      @touchstart.prevent="touchStart"
       @touchmove.prevent="touchMove"
       @touchend.prevent="touchDown"
       ref="songsRef">
@@ -26,6 +26,9 @@
 
               <div :class="{ indicator: true, indicatorActive: active == 0 }">歌曲</div>
               <div :class="{ indicator: true, indicatorActive: active == 1 }">专辑</div>
+              <div class="swipe-icon" @click="goTop">
+                <iconComponent :iconPath="'icon-gengduo'" :iconColor="'#36333f'"></iconComponent>
+              </div>
             </div>
           </template>
           <!-- 歌曲 -->
