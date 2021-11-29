@@ -1,4 +1,4 @@
-import { defineComponent, reactive, ref, onMounted, computed } from 'vue';
+import { defineComponent, reactive, ref, onMounted, computed, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import topNavBar from '@/components/topNavBar/index.vue';
@@ -11,6 +11,7 @@ BScroll.use(MouseWheel).use(ObserveDOM).use(ScrollBar);
 export default defineComponent({
     name: 'singerDetail',
     props: ['singer'],
+    emits: ['goTop'],
     components: {
         topNavBar
     },
@@ -78,7 +79,7 @@ export default defineComponent({
             let scale = pullDown.value && num >= 1 ? `scale(${num})` : 'scale(1)'
             let backDropFilter = !pullDown.value ? `backdropFilter(0px)` : `backdropFilter(0px)`
             return {
-                backgroundImage: `url(${state.artist.img1v1Url})`,
+                backgroundImage: `url(${state.artist.img1v1Url}?param=375y375)`,
                 paddingTop: '100%',
                 backgroundSize: 'cover',
                 transform: `${scale}`,
@@ -88,6 +89,7 @@ export default defineComponent({
         const router = useRouter();
         // 获取歌手相关信息
         const getSingerDetail = async (id) => {
+            await nextTick();
             const response = await SingerDetail.getSingerDetail(id + '');
             const { artist, hotSongs } = response;
             state.artist = artist;
@@ -120,17 +122,19 @@ export default defineComponent({
         }
         // 歌曲和专辑上拉移动事件
         const touchMove = (event) => {
+            console.log(event);
             const { touches, target } = event;
             let songsOffsetTop = songsRef.value.offsetTop;
             let bodyOffsetHeight = document.body.offsetHeight;
             bgImageY = touches[0].pageY;
-            if (target.className != 'van-swipe-item') {
-                return;
-            }
+            console.log(target.className)
             if (parseInt(songsOffsetTop) >= (parseInt(bodyOffsetHeight / 2) + 10)) {
                 pullDown.value = true;
             } else {
                 pullDown.value = false;
+            }
+            if (target.className != 'swipe-indicator') {
+                return;
             }
             if (parseInt(songsOffsetTop) <= parseInt(bodyOffsetHeight / 1.8) && parseInt(songsOffsetTop) >= parseInt(document.body.offsetHeight / 3)) {
                 songsRef.value.style.top = touches[0].pageY - startPoint.value['y'] + 'px';
@@ -152,8 +156,16 @@ export default defineComponent({
         // swipe的切换事件
         const swipeChange = (event) => {
         }
+        // 滑动到顶部
+        const goTop = () => {
+            console.log(1)
+            let bodyOffsetHeight = document.body.offsetHeight;
+            songsRef.value.style.top = `${parseInt(bodyOffsetHeight / 3 + 1)}px`;
+        }
+        const show = () => {
+            console.log('show')
+        }
         return {
-            leftClick,
             bgImageStyle,
             state,
             loading,
@@ -163,10 +175,13 @@ export default defineComponent({
             songsScrollRef,
             albumsScrollRef,
             songsRef,
+            leftClick,
             swipeChange,
             touchStart,
             touchMove,
-            touchDown
+            touchDown,
+            goTop,
+            show
         }
     }
 })
