@@ -1,5 +1,6 @@
 import { defineComponent, reactive, ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import topNavBar from '@/components/topNavBar/index.vue';
 import SingerDetail from '@/service/singerDetail.service'
 import BScroll from '@better-scroll/core';
@@ -42,6 +43,8 @@ export default defineComponent({
             singerId: 0
         });
         const route = useRoute();
+        const store = useStore();
+        console.log(store.dispatch('test'));
         onMounted(() => {
             const id = route.params.id;
             state.singerId = id;
