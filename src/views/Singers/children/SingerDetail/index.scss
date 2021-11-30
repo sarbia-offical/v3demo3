@@ -8,7 +8,7 @@
   z-index: 10;
   background-color: #ffffff;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
   .bg-image{
     position: relative;
     width: 100%;
@@ -51,6 +51,8 @@
     background-color: #ffffff;
     border-top-right-radius: 10%;
     box-sizing: border-box;
+    top: 50%;
+    box-shadow: 5px 5px 7px 0px #888888;
     .singer-opus{
       height: 100%;
       width: 100vw;
@@ -65,15 +67,13 @@
           overflow: hidden;
           .van-swipe-item{
             .songsScroll, .albumsScroll{
-              width: 90vw;
+              width: 85vw;
               height: 100%;
-              margin: 0 auto;
               .songsScroll-content{
                 .songs-item ~ .songs-item{
                   margin-top: .5rem;
                 }
                 .songs-item{
-                  width: 90%;
                   margin-left: 5%;
                   color: $explain-text-color;
                   display: flex;
@@ -87,11 +87,25 @@
                   }
                   .singer{
                     font-size: .3rem;
-                    margin-left: .8rem;
+                    margin-left: .3rem;
+                    width: 65%;
                     .albumName{
                       margin-top: .2rem;
                       font-size: .2rem;
                       display: inline-block;
+                    }
+                  }
+                  .other{
+                    flex: 1;
+                    display: flex;
+                    justify-content: flex-end;
+                    .loadMore{
+                      width: .6rem;
+                      height: .6rem;
+                      background-color: #f2d4a7;
+                      @include aic_jcc();
+                      @include shadow2-1();
+                      border-radius: 50%;
                     }
                   }
                 }
@@ -141,30 +155,39 @@
                 }
               }
             }
+            .albumsScroll{
+              width: 90%;
+              margin: 0 auto;
+            }
           }
         }
         .swipe-indicator{
-        width: 90%;
-        position: absolute;
-        top: 0.15rem;
-        text-align: center;
-        display: flex;
-        margin-left: 5%;
-        .indicator{
-          font-size: .3rem;
-          font-family: hyxhkj;
-          transition: all .4s ease-in-out;
-          background-color: $color-text-lightGray;
-          padding: 0.125rem;
-          box-sizing: border-box;
+          width: 90%;
+          position: absolute;
+          top: 0.15rem;
+          text-align: center;
+          display: flex;
+          margin-left: 5%;
+          .swipe-icon{
+            position: absolute;
+            left: 50%;
+            top: 10%;
+          }
+          .indicator{
+            font-size: .3rem;
+            font-family: hyxhkj;
+            transition: all .4s ease-in-out;
+            background-color: $color-text-lightGray;
+            padding: 0.125rem;
+            box-sizing: border-box;
+          }
+          .indicator ~ .indicator{
+            margin-left: .2rem;
+          }
+          .indicatorActive{
+            background-color: $color-theme-d;
+          }
         }
-        .indicator ~ .indicator{
-          margin-left: .2rem;
-        }
-        .indicatorActive{
-          background-color: $color-theme-d;
-        }
-      }
       }
     }
   }

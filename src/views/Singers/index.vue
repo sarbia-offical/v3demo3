@@ -103,7 +103,11 @@
 <!--     @close="closePopup"-->
 <!--    >内容</van-popup>-->
     <!--  子路由  -->
-    <router-view :singer="state.singerDetail"></router-view>
+    <router-view v-slot="{ Component }">
+      <transition appear name="slider">
+        <component :is="Component" :singer="state.singerDetail"></component>
+      </transition>
+    </router-view>
   </div>
 </template>
 

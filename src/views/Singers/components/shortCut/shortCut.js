@@ -19,6 +19,7 @@ export default defineComponent({
             }
         })
         watch(() => props.titleIndex, (newVal, oldVal) => {
+            console.log(newVal);
             titleIndex.value = newVal;
         })
         // 初始化列表
