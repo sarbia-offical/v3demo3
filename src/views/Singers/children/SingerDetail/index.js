@@ -1,8 +1,9 @@
 import { defineComponent, reactive, ref, onMounted, computed, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useStore } from 'vuex';
+import { useStore, mapActions } from 'vuex';
 import topNavBar from '@/components/topNavBar/index.vue';
-import SingerDetail from '@/service/singerDetail.service'
+import SingerDetail from '@/service/singerDetail.service';
+import PLAY_MODE from '@/assets/js/constant';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
@@ -45,7 +46,7 @@ export default defineComponent({
         });
         const route = useRoute();
         const store = useStore();
-        console.log(store.dispatch('test'));
+        const { setMusicPlay } = mapActions(['setMusicPlay']);
         onMounted(() => {
             const id = route.params.id;
             state.singerId = id;
@@ -122,12 +123,10 @@ export default defineComponent({
         }
         // 歌曲和专辑上拉移动事件
         const touchMove = (event) => {
-            console.log(event);
             const { touches, target } = event;
             let songsOffsetTop = songsRef.value.offsetTop;
             let bodyOffsetHeight = document.body.offsetHeight;
             bgImageY = touches[0].pageY;
-            console.log(target.className)
             if (parseInt(songsOffsetTop) >= (parseInt(bodyOffsetHeight / 2) + 10)) {
                 pullDown.value = true;
             } else {
@@ -165,6 +164,13 @@ export default defineComponent({
         const show = () => {
             console.log('show')
         }
+        const choseSongeItem = (item, index) => {
+            console.log(PLAY_MODE);
+            console.log(setMusicPlay);
+            console.log(item, index);
+            store.dispatch('setMusicPlay', {list: state.list, index: 0, playMode: PLAY_MODE.sequence});
+            store.dispatch('randomPlay', {list: state.list, index: 0, playMode: PLAY_MODE.random})
+        }
         return {
             bgImageStyle,
             state,
@@ -181,7 +187,8 @@ export default defineComponent({
             touchMove,
             touchDown,
             goTop,
-            show
+            show,
+            choseSongeItem
         }
     }
 })

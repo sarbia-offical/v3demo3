@@ -35,7 +35,7 @@
           <van-swipe-item>
             <div class="songsScroll" ref="songsScrollRef">
               <div class="songsScroll-content">
-                <div v-for="(item, index) in state.list" :key="index" class="songs-item">
+                <div v-for="(item, index) in state.list" :key="index" class="songs-item" @click="choseSongeItem(item, index)">
                   <div class="pic">
                     <img v-lazy="item['al'].picUrl + '?param=200y200'">
                   </div>

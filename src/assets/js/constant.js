@@ -6,8 +6,9 @@
  * loop 循环播放
  * random 随机播放
  * */ 
-export const PLAY_MODE = {
+const PLAY_MODE = {
     sequence: 0,
     loop: 1,
     random: 2
 }
+export default PLAY_MODE;
