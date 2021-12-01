@@ -7,8 +7,22 @@
  * @LastEditTime: 2021-10-12 00:27:25
 -->
 <template>
-  <router-view/>
+  <div>
+    <router-view/>
+    <Player></Player>
+  </div>
 </template>
+
+<script>
+import Player from '../src/components/player/index.vue'
+export default {
+  name: 'App',
+  components: {
+    Player
+  }
+}
+</script>
+
 
 <style>
 *{
