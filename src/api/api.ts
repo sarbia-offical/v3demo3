@@ -58,7 +58,7 @@ export default {
         params
     }),
 
-    // 获取歌手单曲
+    // 获取歌手所有单曲
     _getSingerDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
         url: '/api/artists',
         method: 'GET',
@@ -72,5 +72,14 @@ export default {
         url: '/api/artist/album',
         method: 'GET',
         params: params
+    }),
+
+    // 获取歌曲url
+    _getSongUrl: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+        url: '/api/song/url',
+        method: 'GET',
+        params: {
+            id: id
+        }
     })
 }
