@@ -22,6 +22,10 @@ const mutations = {
     // 设置歌曲顺序列表
     setSequenceList: (state, sequenceList) => {
         state.sequenceList = sequenceList;
+    },
+    // 设置歌手
+    setSinger: (state, singer) => {
+        state.singer = singer;
     }
 }
 export default mutations;

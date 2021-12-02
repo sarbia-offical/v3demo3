@@ -95,6 +95,8 @@ export default defineComponent({
             const { artist, hotSongs } = response;
             state.artist = artist;
             state.list = hotSongs;
+            const { code, data, message } = await SingerDetail.getArtistDetail(id + '');
+            store.commit('setSinger', data)
             return response;
         }
         // 获取歌手所有专辑
