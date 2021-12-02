@@ -6,6 +6,10 @@ interface IResponseType{
     more: boolean,
     msg: string,
 }
+interface IResponseType2{
+    code: number,
+    data: Array<any>
+}
 interface IGetSingerAlbumType{
     id: string,
     limit?: string,
@@ -13,5 +17,6 @@ interface IGetSingerAlbumType{
 }
 export default {
     getSingerDetail: (id: string) => api._getSingerDetail<IResponseType>(id),
-    getSingerAlbum: (params: IGetSingerAlbumType) => api._getSingerAlbum<IResponseType>(params)
+    getSingerAlbum: (params: IGetSingerAlbumType) => api._getSingerAlbum<IResponseType>(params),
+    getArtistDetail: (id: string) => api._getArtistDetail<IResponseType2>(id)
 }

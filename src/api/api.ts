@@ -81,5 +81,14 @@ export default {
         params: {
             id: id
         }
+    }),
+
+    // 获取歌手详情
+    _getArtistDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+        url: '/api/artist/detail',
+        method: 'GET',
+        params: {
+            id: id
+        }
     })
-}
+ } 

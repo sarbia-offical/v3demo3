@@ -13,6 +13,7 @@ const state = {
     playMode: PLAY_MODE.sequence,
     playing: false,
     playList: [],
-    sequenceList: []
+    sequenceList: [],
+    singer: {}
 }
 export default state;
