@@ -1,5 +1,7 @@
 import {defineComponent, onMounted, reactive, ref, computed} from 'vue';
+import PLAY_MODE from '@/assets/js/constant';
 import homeService from '@/service/home.service';
+import { useStore, mapActions } from 'vuex';
 import BScroll from '@better-scroll/core'
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
@@ -14,7 +16,8 @@ export default defineComponent({
         const bodyState = reactive({
             list: [],
             currentIndex: 0
-        })
+        });
+        const store = useStore();
         // setTimeout(() => {
         //     bodyState.list = [
         //         {
@@ -209,6 +212,7 @@ export default defineComponent({
         const play = (item, index) => {
             console.log(item, index)
             bodyState.currentIndex = index;
+            store.dispatch('setMusicPlay', {list: bodyState.list, index: index, playMode: PLAY_MODE.sequence});
         }
         // 计算属性
         let loading = computed(() => {

@@ -165,11 +165,8 @@ export default defineComponent({
             console.log('show')
         }
         const choseSongeItem = (item, index) => {
-            console.log(PLAY_MODE);
-            console.log(setMusicPlay);
-            console.log(item, index);
             store.dispatch('setMusicPlay', {list: state.list, index: index, playMode: PLAY_MODE.sequence});
-            // store.dispatch('randomPlay', {list: state.list, index: 0, playMode: PLAY_MODE.random})
+            // store.dispatch('randomPlay', {list: state.list, index: index, playMode: PLAY_MODE.random})
         }
         return {
             bgImageStyle,

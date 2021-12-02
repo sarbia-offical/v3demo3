@@ -1,6 +1,14 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2021-12-02 08:24:57
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2021-12-02 09:31:48
+-->
 <template>
     <div v-show="fullScreen">
-        <audio ref="audioRef"></audio>
+        <audio ref="audioRef" class="audioComponent"></audio>
         <div class="player">
             <div @click="small">缩小</div>
         </div>

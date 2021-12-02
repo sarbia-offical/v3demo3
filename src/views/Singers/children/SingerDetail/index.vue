@@ -35,8 +35,8 @@
           <van-swipe-item>
             <div class="songsScroll" ref="songsScrollRef">
               <div class="songsScroll-content">
-                <div v-for="(item, index) in state.list" :key="index" class="songs-item" @click="choseSongeItem(item, index)">
-                  <div class="pic">
+                <div v-for="(item, index) in state.list" :key="index" class="songs-item">
+                  <div class="pic" @click="choseSongeItem(item, index)">
                     <img v-lazy="item['al'].picUrl + '?param=200y200'">
                   </div>
                   <div class="singer">
@@ -45,7 +45,7 @@
                       <div class="van-multi-ellipsis--l2">{{ item['al'].name }}</div>
                     </div>
                   </div>
-                  <div class="other">
+                  <div class="other" @click="choseSongeItem(item, index)">
                     <div class="loadMore">
                       <iconComponent
                         :iconPath="'icon-huiyuan_fill'"
