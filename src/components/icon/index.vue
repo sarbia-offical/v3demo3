@@ -1,6 +1,6 @@
 <template>
   <div class="iconComponent">
-    <div :class="'iconfont '+iconPath" :style="{ color: iconColor }"></div>
+    <div :class="'iconfont '+iconPath" :style="{ color: iconColor, fontSize: fontSize }"></div>
   </div>
 </template>
 <script>
@@ -15,6 +15,10 @@ export default defineComponent({
     iconColor: {
       type: String,
       default: '#ffffff'
+    },
+    fontSize: {
+      type: String,
+      default: '20px'
     }
   },
   setup(props,{ attrs, slots, emit }){
@@ -28,8 +32,5 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
   .iconComponent{
-    .iconfont{
-      font-size: 100%;
-    }
   }
 </style>
