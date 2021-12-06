@@ -24,7 +24,7 @@
           ></iconComponent>
         </div>
       </div>
-      <div :style="artistStyle">
+      <div :style="artistStyle" class="artistShadow">
         <!-- <div class="lyric"></div> -->
       </div>
       <div class="detail">
@@ -35,6 +35,9 @@
             :key="index"
             class="singer">
             {{ item.name }} 
+          </div> &nbsp;/ 
+          <div>
+            专辑：{{ currentSongs['al']?.name }}
           </div>
         </div>
       </div>
@@ -86,7 +89,7 @@ export default defineComponent({
         height: "50vh",
         width: "100%",
         backgroundImage: `url(${singer?.artist?.cover}?param=375y375)`,
-        backgroundSize: "cover",
+        backgroundSize: "cover"
       };
     });
     watch(currentSongs, async (newVal, oldVal) => {
@@ -125,6 +128,9 @@ export default defineComponent({
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  .artistShadow{
+    box-shadow: 6px 6px 0px 0px #cdc8cf;
+  }
   .circleBtn {
     width: 0.5rem;
     height: 0.5rem;
