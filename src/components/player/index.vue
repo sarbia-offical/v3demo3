@@ -8,7 +8,10 @@
 -->
 <template>
   <div v-show="fullScreen">
-    <audio ref="audioRef" class="audioComponent"></audio>
+    <audio ref="audioRef" class="audioComponent" 
+      @pause="audioPause"
+      @canplay="audioCanplay">
+    </audio>
     <div class="player">
       <div class="topContent" @click="small">
         <div class="circleBtn">
@@ -42,7 +45,7 @@
         </div>
       </div>
       <div class="tools">
-        <div class="circleBtn toolsBtn">
+        <div class="circleBtn toolsBtn" @click="prev">
           <iconComponent
             :iconPath="'icon-shangyishou_huaban'"
             :iconColor="'#000000'"
@@ -51,12 +54,12 @@
         </div>
         <div class="circleBtn toolsBtn" @click="playMusic">
           <iconComponent
-            :iconPath="'icon-kaishi_fill'"
+            :iconPath=" !playing ? 'icon-kaishi_fill' : 'icon-zanting_fill'"
             :iconColor="'#000000'"
             :fontSize="'50px'"
           ></iconComponent>
         </div>
-        <div class="circleBtn toolsBtn">
+        <div class="circleBtn toolsBtn" @click="next">
           <iconComponent
             :iconPath="'icon-shangyishou_huaban-copy'"
             :iconColor="'#000000'"
@@ -64,6 +67,7 @@
           ></iconComponent>
         </div>
       </div>
+      <div class="progressBar"></div>
     </div>
   </div>
 </template>
@@ -72,11 +76,14 @@
 import { computed, defineComponent, watch, ref } from "vue";
 import { useStore } from "vuex";
 import Player from "@/service/player.service";
+import state from "@/store/state";
 export default defineComponent({
   name: "Player",
   setup() {
+    
     const store = useStore();
     const audioRef = ref(null);
+    const audioStatus = ref(false);
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
     const singer = computed(() => store.state.singer);
@@ -92,17 +99,82 @@ export default defineComponent({
         backgroundSize: "cover"
       };
     });
+    const playing = computed(() => store.state.playing);
+    const playList = computed(() => store.state.playList);
+    const currentIndex = computed(() => store.state.currentIndex);
+
     watch(currentSongs, async (newVal, oldVal) => {
+      if(!newVal.id){
+        return ;
+      }
       const res = await Player.getSongUrl(newVal.id);
       const audioEle = audioRef.value;
+      if(!res.data[0].url){
+        store.commit('setPlaying', !store.state.playing)
+        return;
+      }
+      audioStatus.value = true;
       audioEle.src = res.data[0].url;
+      store.commit('setPlaying', true);
+      audioEle.play();
     });
+
+    // 缩小事件
     const small = () => {
       store.commit("setFullScreen", false);
     };
+    // 上一首歌曲
+    const prev = () => {
+      const list = playList.value;
+      if(list.length == 1){
+        loop();
+      } else {
+        let index = currentIndex.value - 1;
+        if(index == -1){
+          index = list.length - 1;
+        }
+        store.commit('setCurrentIndex', index);
+      }
+    }
+    // 下一首歌曲
+    const next = () => {
+      const list = playList.value;
+      if(list.length == 1){
+        loop();
+      } else {
+        let index = currentIndex.value + 1;
+        if(index == list.length){
+          index = 0;
+        }
+        store.commit('setCurrentIndex', index);
+      }
+    }
+    // 循环播放
+    const loop = () => {
+      const audioEle = audioRef.value;
+      audioEle.currentTime = 0;
+      audioEle.play();
+      store.commit('setPlaying', true);
+    }
+    // 播放歌曲
     const playMusic = () => {
       const audioEle = audioRef.value;
-      audioEle.play();
+      console.log(audioEle.paused);
+      if(!store.state.playing){
+        audioEle.play();
+      } else {
+        audioEle.pause();
+      }
+      store.commit('setPlaying', !store.state.playing)
+    }
+    // 歌曲缓冲
+    const audioCanplay = () => {
+      if(!audioStatus.value) return;
+      audioStatus.value = true
+    }
+    // 意外情况暂停歌曲
+    const audioPause = () => {
+      store.commit('setPlaying', false);
     }
     return {
       store,
@@ -111,8 +183,13 @@ export default defineComponent({
       singer,
       audioRef,
       artistStyle,
+      playing,
+      audioStatus,
       small,
-      playMusic
+      playMusic,
+      audioPause,
+      prev,
+      next,
     };
   },
 });
