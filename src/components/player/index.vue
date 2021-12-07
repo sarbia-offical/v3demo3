@@ -49,7 +49,7 @@
             :fontSize="'30px'"
           ></iconComponent>
         </div>
-        <div class="circleBtn toolsBtn">
+        <div class="circleBtn toolsBtn" @click="playMusic">
           <iconComponent
             :iconPath="'icon-kaishi_fill'"
             :iconColor="'#000000'"
@@ -96,19 +96,23 @@ export default defineComponent({
       const res = await Player.getSongUrl(newVal.id);
       const audioEle = audioRef.value;
       audioEle.src = res.data[0].url;
-      // audioEle.play();
     });
     const small = () => {
       store.commit("setFullScreen", false);
     };
+    const playMusic = () => {
+      const audioEle = audioRef.value;
+      audioEle.play();
+    }
     return {
       store,
       currentSongs,
       fullScreen,
       singer,
       audioRef,
-      small,
       artistStyle,
+      small,
+      playMusic
     };
   },
 });
