@@ -8,6 +8,7 @@ import 'vant/es/swipe-item/style';
 import { SwipeItem } from 'vant/es/swipe-item';
 import 'vant/es/nav-bar/style';
 import { NavBar } from 'vant/es/nav-bar';
+import 'vant/es/dialog/style'
 export function registerVantUIComponent(app){
     app.component('van-button', Button)
     .component('van-swipe',Swipe)

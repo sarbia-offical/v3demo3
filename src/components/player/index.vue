@@ -88,14 +88,20 @@ export default defineComponent({
     const fullScreen = computed(() => store.state.fullScreen);
     const singer = computed(() => store.state.singer);
     const artistStyle = computed(() => {
-      console.log(store.state);
       const singer = store.state.singer;
+      let cs = currentSongs.value;
+      console.log(cs)
+      let url = cs['al'] ? cs['al'].picUrl : '';
+      console.log(url);
+      if(!!!url){
+        url = singer?.artist?.cover;
+      }
       return {
         position: "relative",
         marginTop: ".3rem",
         height: "50vh",
         width: "100%",
-        backgroundImage: `url(${singer?.artist?.cover}?param=375y375)`,
+        backgroundImage: `url(${url}?param=375y375)`,
         backgroundSize: "cover"
       };
     });
@@ -104,6 +110,7 @@ export default defineComponent({
     const currentIndex = computed(() => store.state.currentIndex);
 
     watch(currentSongs, async (newVal, oldVal) => {
+      console.log(newVal)
       if(!newVal.id){
         return ;
       }
@@ -210,7 +217,8 @@ export default defineComponent({
   justify-content: flex-start;
   align-items: center;
   .artistShadow{
-    box-shadow: 6px 6px 0px 0px #cdc8cf;
+    box-shadow: 2px 2px 12px 0 rgba(0,0,0,.1);
+    border-radius: 5px;
   }
   .circleBtn {
     width: 0.5rem;

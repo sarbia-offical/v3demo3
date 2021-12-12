@@ -7,11 +7,12 @@
     <div class="singerSlide">
       <div class="singerSlide-top">
         <div>每日推荐</div>
+        <div>搜索更多</div>
       </div>
       <div class="singerSlide-wrapper" ref="singerSlideRef">
         <div class="singerSlide-content">
           <div class="singerSlide-item"
-           v-for="(item, index) in state.artists.slice(0,10)"
+           v-for="(item, index) in state.artists?.slice(0,10)"
            :key="index"
            @click="artistClick(item, index)"
           >
@@ -55,7 +56,6 @@
         </div>
       </div>
     </div>
-    <div v-waiting:[waitingText]="{flag: waiting}"></div>
     <div class="currentTitle" v-if="!!titleIndex">{{ Object.keys(state.singerList)[titleIndex] }}</div>
     <!--  快捷导航  -->
     <div class="shortCut">
@@ -65,7 +65,7 @@
         :titleIndex="titleIndex"></shortCut>
     </div>
     <!--  歌手列表  -->
-    <div class="list" ref="singerListRef">
+    <div class="list" ref="singerListRef"  v-waiting:[waitingText]="{flag: waiting}">
       <div class="list-content">
         <div
             class="list-item"

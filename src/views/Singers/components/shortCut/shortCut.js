@@ -19,7 +19,6 @@ export default defineComponent({
             }
         })
         watch(() => props.titleIndex, (newVal, oldVal) => {
-            console.log(newVal);
             titleIndex.value = newVal;
         })
         // 初始化列表
@@ -31,7 +30,6 @@ export default defineComponent({
             list1.value = list;
         }
         const touchStart = (e) => {
-            console.log(e);
             touch['y1'] = e.touches[0].pageY
             touch['y1Index'] = e.target.dataset.index;
             emit('itemClick', e.target);
@@ -40,7 +38,6 @@ export default defineComponent({
         const touchMove = (e) => {
             touch['y2'] = e.touches[0].pageY;
             touch['y2Index'] = (touch['y2'] - touch['y1']) / 20 | 0;
-            console.log(touch.y1Index, touch.y2Index)
         }
 
         return {

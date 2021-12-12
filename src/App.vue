@@ -33,4 +33,7 @@ export default {
   font-family: 'hyxhkj';
   src: url("./assets/汉仪细行楷简.ttf");
 }
+.dialogStyle{
+  z-index: 999999 !important;
+}
 </style>
