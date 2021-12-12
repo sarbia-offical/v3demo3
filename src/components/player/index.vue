@@ -13,8 +13,8 @@
       @canplay="audioCanplay">
     </audio>
     <div class="player">
-      <div class="topContent" @click="small">
-        <div class="circleBtn">
+      <div class="topContent">
+        <div class="circleBtn" @click="small">
           <iconComponent
             :iconPath="'icon-jiantou34'"
             :iconColor="'#000000'"
@@ -24,6 +24,7 @@
           <iconComponent
             :iconPath="'icon-xianhua'"
             :iconColor="'#000000'"
+            @click="showBigPic"
           ></iconComponent>
         </div>
       </div>
@@ -69,6 +70,7 @@
       </div>
       <div class="progressBar"></div>
     </div>
+    <ImgPopup :show="show"></ImgPopup>
   </div>
 </template>
 
@@ -76,14 +78,17 @@
 import { computed, defineComponent, watch, ref } from "vue";
 import { useStore } from "vuex";
 import Player from "@/service/player.service";
-import state from "@/store/state";
+import ImgPopup from '@/components/imgPopup/index.vue';
 export default defineComponent({
   name: "Player",
+  components: {
+    ImgPopup
+  },
   setup() {
-    
     const store = useStore();
     const audioRef = ref(null);
     const audioStatus = ref(false);
+    const show = ref(false);
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
     const singer = computed(() => store.state.singer);
@@ -183,6 +188,10 @@ export default defineComponent({
     const audioPause = () => {
       store.commit('setPlaying', false);
     }
+    // 大图展示
+    const showBigPic = () => {
+      show.value = true;
+    }
     return {
       store,
       currentSongs,
@@ -192,11 +201,13 @@ export default defineComponent({
       artistStyle,
       playing,
       audioStatus,
+      show,
       small,
       playMusic,
       audioPause,
       prev,
       next,
+      showBigPic
     };
   },
 });
