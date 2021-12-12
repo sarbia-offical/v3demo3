@@ -8,6 +8,7 @@ import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
 import ScrollBar from '@better-scroll/scroll-bar'
+import {Dialog} from "vant";
 BScroll.use(MouseWheel).use(ObserveDOM).use(ScrollBar);
 export default defineComponent({
     name: 'singerDetail',
@@ -92,25 +93,38 @@ export default defineComponent({
         const getSingerDetail = async (id) => {
             await nextTick();
             const response = await SingerDetail.getSingerDetail(id + '');
-            const { artist, hotSongs } = response;
-            state.artist = artist;
-            state.list = hotSongs;
-            const { code, data, message } = await SingerDetail.getArtistDetail(id + '');
+            const { artist, hotSongs, code: code1, msg } = response;
+            if(code1 === 200){
+                state.artist = artist;
+                state.list = hotSongs;
+            } else {
+                Dialog({
+                    title: '请求异常 =。=',
+                    message: msg,
+                    className: 'dialogStyle'
+                })
+                state.artist = {};
+                state.list = [];
+            }
+            const { code: code2, data, msg: msg2 } = await SingerDetail.getArtistDetail(id + '');
             store.commit('setSinger', data)
             return response;
         }
         // 获取歌手所有专辑
         const getSingerAlbum = async (params) => {
             const response = await SingerDetail.getSingerAlbum(params);
-            const { hotAlbums } = response;
-            const arr = hotAlbums.map((item, index) => ({
-                name: item.name,
-                company: item.company,
-                picUrl: item.picUrl,
-                blurPicUrl: item.blurPicUrl,
-                subType: item.subType
-            }));
-            state.ablumList = state.ablumList.concat(arr);
+            console.log(response)
+            const { hotAlbums, code, msg } = response;
+            if(code === 200){
+                const arr = hotAlbums.map((item, index) => ({
+                    name: item.name,
+                    company: item.company,
+                    picUrl: item.picUrl,
+                    blurPicUrl: item.blurPicUrl,
+                    subType: item.subType
+                }));
+                state.ablumList = state.ablumList.concat(arr);
+            }
             return response;
         }
         // 返回事件

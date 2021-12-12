@@ -7,6 +7,7 @@ import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
 BScroll.use(MouseWheel).use(ObserveDOM);
 import topNavBar from '@/components/topNavBar/index.vue';
+import { Dialog } from 'vant';
 export default defineComponent({
     name: 'Singers',
     components: {
@@ -124,7 +125,6 @@ export default defineComponent({
             })
             getArtist();
             getTopArtists();
-            console.log(singerList)
             scrollInstance = singerList;
         });
         // 监听每个item的高度
@@ -176,14 +176,24 @@ export default defineComponent({
         // 根据条件查询歌手
         const getArtist = async () => {
             state.artists2 = [];
-            const { singerList, artists: artists2 } = await singerService.getArtist({
+            const { singerList, artists: artists2, code, msg } = await singerService.getArtist({
                 type: state.type,
                 area: state.area,
                 offset: '1',
                 limit: '100'
             })
-            state.singerList = singerList;
-            state.artists2 = artists2;
+            if(code === 200){
+                state.singerList = singerList;
+                state.artists2 = artists2;
+            } else {
+                Dialog({
+                    title: '请求异常 =。=',
+                    message: msg,
+                    className: 'dialogStyle'
+                })
+                state.singerList = [];
+                state.artists2 = [];
+            }
         }
         // 查询热门歌手
         const getTopArtists = async () => {
@@ -191,7 +201,16 @@ export default defineComponent({
                 offset: '0',
                 limit: '30'
             })
-            state.artists = artists;
+            if(code === 200){
+                state.artists = artists;
+            } else {
+                Dialog({
+                    title: '请求异常 =。=',
+                    message: msg,
+                    className: 'dialogStyle'
+                })
+                state.artists = [];
+            }
         }
         const itemClick = (event) => {
             let elements = singerListRef.value.children[0].children;

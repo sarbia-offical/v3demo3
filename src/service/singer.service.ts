@@ -33,25 +33,30 @@ export default {
         const singerList = {};
         return new Promise((resolve, reject) => {
             api._getArtist<IGetArtistType>(params).then(res => {
-                const {artists} = res;
-                artists.forEach((ele, index) => {
-                    const pinYings = pinyin(ele.name);
-                    if (!pinYings && !!pinYings.length) {
-                        return;
-                    }
-                    const prefixPinyin = pinYings[0][0].slice(0, 1).toUpperCase();
-                    if (prefixPinyin) {
-                        if (!singerList[prefixPinyin]) {
-                            singerList[prefixPinyin] = {
-                                title: prefixPinyin,
-                                list: []
-                            }
+                if(res.code == 500){
+                    res['singerList'] = {};
+                    resolve(res);
+                } else {
+                    const {artists} = res;
+                    artists.forEach((ele, index) => {
+                        const pinYings = pinyin(ele.name);
+                        if (!pinYings && !!pinYings.length) {
+                            return;
                         }
-                        singerList[prefixPinyin].list.push(ele);
-                    }
-                })
-                res['singerList'] = singerList;
-                resolve(res);
+                        const prefixPinyin = pinYings[0][0].slice(0, 1).toUpperCase();
+                        if (prefixPinyin) {
+                            if (!singerList[prefixPinyin]) {
+                                singerList[prefixPinyin] = {
+                                    title: prefixPinyin,
+                                    list: []
+                                }
+                            }
+                            singerList[prefixPinyin].list.push(ele);
+                        }
+                    })
+                    res['singerList'] = singerList;
+                    resolve(res);
+                }
             }).catch(reason => {
                 const {msg} = reason;
                 reject({

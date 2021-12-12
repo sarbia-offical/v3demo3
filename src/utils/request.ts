@@ -7,6 +7,7 @@
  * @LastEditTime: 2021-08-17 15:48:13
  */
 const axios = require('axios');
+import constant from '@/assets/js/constant';
 export default class {
     
     private static axiosFactory: any = null;
@@ -29,6 +30,9 @@ export default class {
             } else {
                 return Object.assign({},{ result: {} }, data);
             }
+        }, (error) => {
+            const {message, code} = error;
+            return { code: constant.ERROR_CODE[code], msg: message }
         })
         return this.axiosFactory;
     }
