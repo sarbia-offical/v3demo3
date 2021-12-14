@@ -88,7 +88,8 @@
           ></iconComponent>
         </div>
       </div>
-    </div>
+      <div class="playMode"></div>
+    </div>  
     <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
 </template>
@@ -149,9 +150,18 @@ export default defineComponent({
       }
       audioStatus.value = true;
       audioEle.src = res.data[0].url;
-      store.commit('setPlaying', true);
-      audioEle.play();
+      console.log(playing.value);
+      if(playing.value){
+        audioEle.play();
+      }
     });
+
+    watch(playing, (newVal, oldVal) => {
+      const audioEle = audioRef.value;
+      if(newVal){
+        audioEle.play();
+      }
+    })
 
     watch(fullScreen, (newVal, oldVal) => {
       const audioEle = audioRef.value;
@@ -175,6 +185,7 @@ export default defineComponent({
           index = list.length - 1;
         }
         store.commit('setCurrentIndex', index);
+        store.commit('setPlaying', true);
       }
     }
     // 下一首歌曲
@@ -188,6 +199,7 @@ export default defineComponent({
           index = 0;
         }
         store.commit('setCurrentIndex', index);
+        store.commit('setPlaying', true);
       }
     }
     // 循环播放
@@ -228,8 +240,10 @@ export default defineComponent({
     // 随机播放
     const randomPlay = () => {
       let status = constant.PLAY_MODE.random;
-
-      store.commit('setPlayMode', constant.PLAY_MODE.random)
+      if(playMode.value == constant.PLAY_MODE.random){
+        status = constant.PLAY_MODE.sequence;
+      }
+      store.dispatch('changeMode', status)
     }
     // 重复播放
     const loopPlay = () => {
@@ -237,7 +251,7 @@ export default defineComponent({
       if(playMode.value == constant.PLAY_MODE.loop){
         status = constant.PLAY_MODE.sequence;
       }
-      store.commit('setPlayMode', status)
+      store.dispatch('changeMode', status)
     }
     // 意外情况暂停歌曲
     const audioPause = () => {
@@ -361,6 +375,10 @@ export default defineComponent({
     .toolsBtn:active{
       @include shadow2-2();
     }
+  }
+  .playMode{
+    flex: .8;
+    width: 50vw;
   }
   .progressBar{
     display: flex;
