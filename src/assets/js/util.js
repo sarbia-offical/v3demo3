@@ -19,4 +19,5 @@ export default {
             swap(arr, i ,j)
         }       
     },
+    buling: (num) => num < 10 ? `0${num}` : num
 }
