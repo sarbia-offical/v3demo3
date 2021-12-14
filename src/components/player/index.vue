@@ -33,7 +33,12 @@
         <!-- <div class="lyric"></div> -->
       </div>
       <div class="detail">
-        <div class="songName">{{ currentSongs.name }}</div>
+        <div class="songName">
+          {{ currentSongs.name }}
+          <div class="playMode">
+            {{ playMode == 0 ? '顺序播放' : playMode == 1 ? '单曲循环' : '随机播放' }}中...
+          </div>
+        </div>
         <div class="singers">
           <div 
             v-for="(item, index) in currentSongs.ar" 
@@ -88,7 +93,6 @@
           ></iconComponent>
         </div>
       </div>
-      <div class="playMode"></div>
     </div>  
     <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
@@ -348,9 +352,20 @@ export default defineComponent({
     margin-top: 1vh;
     @include aic_jcc();
     flex-direction: column;
+    margin-top: .3rem;
     .songName{
       font-family: hyxhkj;
       font-size: 0.575rem;
+      .playMode{
+        width: 1.8rem;
+        margin: 0 auto;
+        margin-top: .2rem;
+        font-size: .2rem;
+        text-align: center;
+        border: 1px solid orange;
+        padding: .1rem;
+        border-radius: .1rem;
+      }
     }
     .singers{
       margin-top: .3rem;
@@ -376,17 +391,13 @@ export default defineComponent({
       @include shadow2-2();
     }
   }
-  .playMode{
-    flex: .8;
-    width: 50vw;
-  }
   .progressBar{
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-size: .3rem;
     width: 100%;
-    margin-top: .1rem;
+    margin-top: .3rem;
     .bar{
       flex: .9;
       height: .2rem;
