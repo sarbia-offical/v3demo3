@@ -14,10 +14,12 @@ const swap = (arr, i, j) => {
 }
 export default {
     shuffle: (arr) => {
-        for(let i = 0; i < arr.length; i ++ ){
+        let arrx = arr.slice();
+        for(let i = 0; i < arrx.length; i ++ ){
             let j = random(i);
-            swap(arr, i ,j)
-        }       
+            swap(arrx, i ,j)
+        }    
+        return arrx;   
     },
     buling: (num) => num < 10 ? `0${num}` : num
 }

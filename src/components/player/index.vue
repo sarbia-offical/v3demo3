@@ -33,7 +33,12 @@
         <!-- <div class="lyric"></div> -->
       </div>
       <div class="detail">
-        <div class="songName">{{ currentSongs.name }}</div>
+        <div class="songName">
+          {{ currentSongs.name }}
+          <div class="playMode">
+            {{ playMode == 0 ? '顺序播放' : playMode == 1 ? '单曲循环' : '随机播放' }}中...
+          </div>
+        </div>
         <div class="singers">
           <div 
             v-for="(item, index) in currentSongs.ar" 
@@ -88,7 +93,7 @@
           ></iconComponent>
         </div>
       </div>
-    </div>
+    </div>  
     <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
 </template>
@@ -149,9 +154,18 @@ export default defineComponent({
       }
       audioStatus.value = true;
       audioEle.src = res.data[0].url;
-      store.commit('setPlaying', true);
-      audioEle.play();
+      console.log(playing.value);
+      if(playing.value){
+        audioEle.play();
+      }
     });
+
+    watch(playing, (newVal, oldVal) => {
+      const audioEle = audioRef.value;
+      if(newVal){
+        audioEle.play();
+      }
+    })
 
     watch(fullScreen, (newVal, oldVal) => {
       const audioEle = audioRef.value;
@@ -175,6 +189,7 @@ export default defineComponent({
           index = list.length - 1;
         }
         store.commit('setCurrentIndex', index);
+        store.commit('setPlaying', true);
       }
     }
     // 下一首歌曲
@@ -188,6 +203,7 @@ export default defineComponent({
           index = 0;
         }
         store.commit('setCurrentIndex', index);
+        store.commit('setPlaying', true);
       }
     }
     // 循环播放
@@ -228,8 +244,10 @@ export default defineComponent({
     // 随机播放
     const randomPlay = () => {
       let status = constant.PLAY_MODE.random;
-
-      store.commit('setPlayMode', constant.PLAY_MODE.random)
+      if(playMode.value == constant.PLAY_MODE.random){
+        status = constant.PLAY_MODE.sequence;
+      }
+      store.dispatch('changeMode', status)
     }
     // 重复播放
     const loopPlay = () => {
@@ -237,7 +255,7 @@ export default defineComponent({
       if(playMode.value == constant.PLAY_MODE.loop){
         status = constant.PLAY_MODE.sequence;
       }
-      store.commit('setPlayMode', status)
+      store.dispatch('changeMode', status)
     }
     // 意外情况暂停歌曲
     const audioPause = () => {
@@ -334,9 +352,20 @@ export default defineComponent({
     margin-top: 1vh;
     @include aic_jcc();
     flex-direction: column;
+    margin-top: .3rem;
     .songName{
       font-family: hyxhkj;
       font-size: 0.575rem;
+      .playMode{
+        width: 1.8rem;
+        margin: 0 auto;
+        margin-top: .2rem;
+        font-size: .2rem;
+        text-align: center;
+        border: 1px solid orange;
+        padding: .1rem;
+        border-radius: .1rem;
+      }
     }
     .singers{
       margin-top: .3rem;
@@ -368,7 +397,7 @@ export default defineComponent({
     align-items: center;
     font-size: .3rem;
     width: 100%;
-    margin-top: .1rem;
+    margin-top: .3rem;
     .bar{
       flex: .9;
       height: .2rem;

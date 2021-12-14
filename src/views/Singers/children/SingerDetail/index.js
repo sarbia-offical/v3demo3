@@ -3,7 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useStore, mapActions } from 'vuex';
 import topNavBar from '@/components/topNavBar/index.vue';
 import SingerDetail from '@/service/singerDetail.service';
-import PLAY_MODE from '@/assets/js/constant';
+import constant from '@/assets/js/constant';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
@@ -47,7 +47,6 @@ export default defineComponent({
         });
         const route = useRoute();
         const store = useStore();
-        const { setMusicPlay } = mapActions(['setMusicPlay']);
         onMounted(() => {
             const id = route.params.id;
             state.singerId = id;
@@ -97,6 +96,7 @@ export default defineComponent({
             if(code1 === 200){
                 state.artist = artist;
                 state.list = hotSongs;
+                store.dispatch('initialMusicPlay', {list: state.list, playMode: constant.PLAY_MODE.sequence});
             } else {
                 Dialog({
                     title: '请求异常 =。=',
@@ -181,8 +181,9 @@ export default defineComponent({
             console.log('show')
         }
         const choseSongeItem = (item, index) => {
-            store.dispatch('setMusicPlay', {list: state.list, index: index, playMode: PLAY_MODE.sequence});
-            // store.dispatch('randomPlay', {list: state.list, index: index, playMode: PLAY_MODE.random})
+            console.log(item);
+            let index2 = store.state.playList.findIndex(ele => ele.id == item.id);
+            store.dispatch('setMusicPlay', index2)
         }
         return {
             bgImageStyle,
