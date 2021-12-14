@@ -10,7 +10,8 @@
   <div v-show="fullScreen">
     <audio ref="audioRef" class="audioComponent" 
       @pause="audioPause"
-      @canplay="audioCanplay">
+      @canplay="audioCanplay"
+      @durationchange="durationChange">
     </audio>
     <div class="player">
       <div class="topContent">
@@ -45,7 +46,19 @@
           </div>
         </div>
       </div>
+      <div class="progressBar">
+        <div>00: 00</div>
+        <div class="bar"></div>
+        <div>{{ duration.minutes }}:{{ duration.second }}</div>
+      </div>
       <div class="tools">
+        <div class="circleBtn toolsBtn" @click="randomPlay">
+          <iconComponent
+              :iconPath="'icon-suijibofang'"
+              :iconColor="playMode == 2 ? '#808080' : '#000000'"
+              :fontSize="'20px'"
+          ></iconComponent>
+        </div>
         <div class="circleBtn toolsBtn" @click="prev">
           <iconComponent
             :iconPath="'icon-shangyishou_huaban'"
@@ -67,18 +80,26 @@
             :fontSize="'30px'"
           ></iconComponent>
         </div>
+        <div class="circleBtn toolsBtn" @click="loopPlay">
+          <iconComponent
+              :iconPath="'icon-danquxunhuan'"
+              :iconColor="playMode == 1 ? '#808080' : '#000000'"
+              :fontSize="'20px'"
+          ></iconComponent>
+        </div>
       </div>
-      <div class="progressBar"></div>
     </div>
-    <ImgPopup :show="show"></ImgPopup>
+    <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, watch, ref } from "vue";
+import { computed, defineComponent, watch, ref, nextTick } from "vue";
 import { useStore } from "vuex";
 import Player from "@/service/player.service";
 import ImgPopup from '@/components/imgPopup/index.vue';
+import constant from '@/assets/js/constant';
+import util from '../../assets/js/util';
 export default defineComponent({
   name: "Player",
   components: {
@@ -89,15 +110,17 @@ export default defineComponent({
     const audioRef = ref(null);
     const audioStatus = ref(false);
     const show = ref(false);
+    const duration = ref({});
+
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
     const singer = computed(() => store.state.singer);
+    const playMode = computed(() => store.state.playMode);
     const artistStyle = computed(() => {
+      const audioEle = audioRef.value;
       const singer = store.state.singer;
       let cs = currentSongs.value;
-      console.log(cs)
       let url = cs['al'] ? cs['al'].picUrl : '';
-      console.log(url);
       if(!!!url){
         url = singer?.artist?.cover;
       }
@@ -115,7 +138,6 @@ export default defineComponent({
     const currentIndex = computed(() => store.state.currentIndex);
 
     watch(currentSongs, async (newVal, oldVal) => {
-      console.log(newVal)
       if(!newVal.id){
         return ;
       }
@@ -130,6 +152,13 @@ export default defineComponent({
       store.commit('setPlaying', true);
       audioEle.play();
     });
+
+    watch(fullScreen, (newVal, oldVal) => {
+      const audioEle = audioRef.value;
+      if(newVal && audioEle.currentTime > 0){
+          audioEle.play();
+      }
+    })
 
     // 缩小事件
     const small = () => {
@@ -184,6 +213,32 @@ export default defineComponent({
       if(!audioStatus.value) return;
       audioStatus.value = true
     }
+    // 获取歌曲时长
+    const durationChange = () => {
+      const audioEle = audioRef.value;
+      const durationx = audioEle.duration;
+      console.log(audioEle.duration)
+      let minutes = util.buling(parseInt(durationx / 60));
+      let second = util.buling(parseInt(durationx % 60));
+      duration.value = {
+        'minutes': minutes,
+        'second': second
+      }
+    }
+    // 随机播放
+    const randomPlay = () => {
+      let status = constant.PLAY_MODE.random;
+
+      store.commit('setPlayMode', constant.PLAY_MODE.random)
+    }
+    // 重复播放
+    const loopPlay = () => {
+      let status = constant.PLAY_MODE.loop;
+      if(playMode.value == constant.PLAY_MODE.loop){
+        status = constant.PLAY_MODE.sequence;
+      }
+      store.commit('setPlayMode', status)
+    }
     // 意外情况暂停歌曲
     const audioPause = () => {
       store.commit('setPlaying', false);
@@ -192,22 +247,32 @@ export default defineComponent({
     const showBigPic = () => {
       show.value = true;
     }
+    // 关闭图片popup
+    const closePopup = () => {
+      show.value = false;
+    }
     return {
       store,
       currentSongs,
       fullScreen,
       singer,
+      playMode,
       audioRef,
       artistStyle,
       playing,
       audioStatus,
       show,
+      duration,
       small,
       playMusic,
+      durationChange,
       audioPause,
       prev,
       next,
-      showBigPic
+      showBigPic,
+      closePopup,
+      randomPlay,
+      loopPlay
     };
   },
 });
@@ -287,6 +352,7 @@ export default defineComponent({
     width: 100%;
     @include aic_jcsb();
     justify-content: space-evenly;
+    margin-top: .3rem;
     .toolsBtn{
       width: auto;
       height: auto;
@@ -294,6 +360,20 @@ export default defineComponent({
     }
     .toolsBtn:active{
       @include shadow2-2();
+    }
+  }
+  .progressBar{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: .3rem;
+    width: 100%;
+    margin-top: .1rem;
+    .bar{
+      flex: .9;
+      height: .2rem;
+      background: linear-gradient(45deg, #fb3 25%, #58a 0, #58a 50%, #fb3 0, #fb3 75%, #58a 0);
+      border-radius: 20px;
     }
   }
 }

@@ -1,6 +1,9 @@
 <template>
   <div class="imgPopup">
-    <van-popup v-model:show="show1" position="center" class="popup" 
+    <van-popup v-model:show="show1" position="center" class="popup"
+      closeable
+      close-icon="close"
+      @close="closePopup"
       :style="{ 
         width: '80vw', 
         height: '50vh', 
@@ -23,9 +26,12 @@ export default defineComponent({
   emits: ['close'],
   setup(props, context) {
     const show1 = computed(() => props.show);
-    console.log(show1);
+    const closePopup = () => {
+      context.emit('close');
+    }
     return {
-      show1
+      show1,
+      closePopup
     };
   }
 })
