@@ -30,7 +30,6 @@
         </div>
       </div>
       <div :style="artistStyle" class="artistShadow">
-        <!-- <div class="lyric"></div> -->
       </div>
       <div class="detail">
         <div class="songName">
@@ -40,12 +39,12 @@
           </div>
         </div>
         <div class="singers">
-          <div 
-            v-for="(item, index) in currentSongs.ar" 
+          <div
+            v-for="(item, index) in currentSongs.ar"
             :key="index"
             class="singer">
-            {{ item.name }} 
-          </div> &nbsp;/ 
+            {{ item.name }}
+          </div> &nbsp;/
           <div>
             专辑：{{ currentSongs['al']?.name }}
           </div>
@@ -93,7 +92,7 @@
           ></iconComponent>
         </div>
       </div>
-    </div>  
+    </div>
     <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
 </template>
@@ -269,6 +268,10 @@ export default defineComponent({
     const closePopup = () => {
       show.value = false;
     }
+    // 切换swipe
+    const swipeChange = () => {
+
+    }
     return {
       store,
       currentSongs,
@@ -290,7 +293,8 @@ export default defineComponent({
       showBigPic,
       closePopup,
       randomPlay,
-      loopPlay
+      loopPlay,
+      swipeChange
     };
   },
 });
@@ -355,13 +359,13 @@ export default defineComponent({
     margin-top: .3rem;
     .songName{
       font-family: hyxhkj;
-      font-size: 0.575rem;
+      font-size: 0.75rem;
+      text-align: center;
       .playMode{
         width: 1.8rem;
         margin: 0 auto;
         margin-top: .2rem;
-        font-size: .2rem;
-        text-align: center;
+        font-size: .1rem;
         border: 1px solid orange;
         padding: .1rem;
         border-radius: .1rem;
