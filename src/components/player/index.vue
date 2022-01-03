@@ -52,9 +52,12 @@
         </div>
       </div>
       <div class="progressBar">
-        <div>00: 00</div>
-        <div class="bar"></div>
-        <div>{{ duration.minutes }}:{{ duration.second }}</div>
+        <div class="progressCurrentTime">00: 00</div>
+        <!-- <div class="bar"></div> -->
+        <div class="center">
+          <progressBar :progress="process"></progressBar>
+        </div>
+        <div class="progressDuration">{{ duration.minutes }}:{{ duration.second }}</div>
       </div>
       <div class="tools">
         <div class="circleBtn toolsBtn" @click="randomPlay">
@@ -105,10 +108,12 @@ import Player from "@/service/player.service";
 import ImgPopup from '@/components/imgPopup/index.vue';
 import constant from '@/assets/js/constant';
 import util from '../../assets/js/util';
+import progressBar from '@/components/progressBar/index.vue'
 export default defineComponent({
   name: "Player",
   components: {
-    ImgPopup
+    ImgPopup,
+    progressBar
   },
   setup() {
     const store = useStore();
@@ -116,6 +121,7 @@ export default defineComponent({
     const audioStatus = ref(false);
     const show = ref(false);
     const duration = ref({});
+    const process = ref(0);
 
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
@@ -233,7 +239,6 @@ export default defineComponent({
     const durationChange = () => {
       const audioEle = audioRef.value;
       const durationx = audioEle.duration;
-      console.log(audioEle.duration)
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
       duration.value = {
@@ -281,6 +286,7 @@ export default defineComponent({
       audioStatus,
       show,
       duration,
+      process,
       small,
       playMusic,
       durationChange,
@@ -403,6 +409,12 @@ export default defineComponent({
       height: .2rem;
       background: linear-gradient(45deg, #fb3 25%, #58a 0, #58a 50%, #fb3 0, #fb3 75%, #58a 0);
       border-radius: 20px;
+    }
+    .center{
+      flex: .8;
+    }
+    .progressCurrentTime, .progressDuration{
+      flex: 0 0 13%;
     }
   }
 }
