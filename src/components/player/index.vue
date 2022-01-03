@@ -30,7 +30,6 @@
         </div>
       </div>
       <div :style="artistStyle" class="artistShadow">
-        <!-- <div class="lyric"></div> -->
       </div>
       <div class="detail">
         <div class="songName">
@@ -40,21 +39,24 @@
           </div>
         </div>
         <div class="singers">
-          <div 
-            v-for="(item, index) in currentSongs.ar" 
+          <div
+            v-for="(item, index) in currentSongs.ar"
             :key="index"
             class="singer">
-            {{ item.name }} 
-          </div> &nbsp;/ 
+            {{ item.name }}
+          </div> &nbsp;/
           <div>
             专辑：{{ currentSongs['al']?.name }}
           </div>
         </div>
       </div>
       <div class="progressBar">
-        <div>00: 00</div>
-        <div class="bar"></div>
-        <div>{{ duration.minutes }}:{{ duration.second }}</div>
+        <div class="progressCurrentTime">00: 00</div>
+        <!-- <div class="bar"></div> -->
+        <div class="center">
+          <progressBar :progress="process"></progressBar>
+        </div>
+        <div class="progressDuration">{{ duration.minutes }}:{{ duration.second }}</div>
       </div>
       <div class="tools">
         <div class="circleBtn toolsBtn" @click="randomPlay">
@@ -93,7 +95,7 @@
           ></iconComponent>
         </div>
       </div>
-    </div>  
+    </div>
     <ImgPopup :show="show" @close="closePopup"></ImgPopup>
   </div>
 </template>
@@ -105,10 +107,12 @@ import Player from "@/service/player.service";
 import ImgPopup from '@/components/imgPopup/index.vue';
 import constant from '@/assets/js/constant';
 import util from '../../assets/js/util';
+import progressBar from '@/components/progressBar/index.vue'
 export default defineComponent({
   name: "Player",
   components: {
-    ImgPopup
+    ImgPopup,
+    progressBar
   },
   setup() {
     const store = useStore();
@@ -116,6 +120,7 @@ export default defineComponent({
     const audioStatus = ref(false);
     const show = ref(false);
     const duration = ref({});
+    const process = ref(0);
 
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
@@ -233,7 +238,6 @@ export default defineComponent({
     const durationChange = () => {
       const audioEle = audioRef.value;
       const durationx = audioEle.duration;
-      console.log(audioEle.duration)
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
       duration.value = {
@@ -269,6 +273,10 @@ export default defineComponent({
     const closePopup = () => {
       show.value = false;
     }
+    // 切换swipe
+    const swipeChange = () => {
+
+    }
     return {
       store,
       currentSongs,
@@ -281,6 +289,7 @@ export default defineComponent({
       audioStatus,
       show,
       duration,
+      process,
       small,
       playMusic,
       durationChange,
@@ -290,7 +299,8 @@ export default defineComponent({
       showBigPic,
       closePopup,
       randomPlay,
-      loopPlay
+      loopPlay,
+      swipeChange
     };
   },
 });
@@ -355,13 +365,13 @@ export default defineComponent({
     margin-top: .3rem;
     .songName{
       font-family: hyxhkj;
-      font-size: 0.575rem;
+      font-size: 0.75rem;
+      text-align: center;
       .playMode{
         width: 1.8rem;
         margin: 0 auto;
         margin-top: .2rem;
-        font-size: .2rem;
-        text-align: center;
+        font-size: .1rem;
         border: 1px solid orange;
         padding: .1rem;
         border-radius: .1rem;
@@ -403,6 +413,12 @@ export default defineComponent({
       height: .2rem;
       background: linear-gradient(45deg, #fb3 25%, #58a 0, #58a 50%, #fb3 0, #fb3 75%, #58a 0);
       border-radius: 20px;
+    }
+    .center{
+      flex: .8;
+    }
+    .progressCurrentTime, .progressDuration{
+      flex: 0 0 13%;
     }
   }
 }
