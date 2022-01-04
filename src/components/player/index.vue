@@ -4,14 +4,15 @@
  * @Author: zouwenqin
  * @Date: 2021-12-02 08:24:57
  * @LastEditors: zouwenqin
- * @LastEditTime: 2021-12-02 09:31:48
+ * @LastEditTime: 2022-01-04 11:49:44
 -->
 <template>
   <div v-show="fullScreen">
     <audio ref="audioRef" class="audioComponent" 
       @pause="audioPause"
       @canplay="audioCanplay"
-      @durationchange="durationChange">
+      @durationchange="durationChange"
+      @timeupdate="updateTime">
     </audio>
     <div class="player">
       <div class="topContent">
@@ -51,12 +52,12 @@
         </div>
       </div>
       <div class="progressBar">
-        <div class="progressCurrentTime">00: 00</div>
+        <div class="progressCurrentTime">{{ currentTimeText.minutes }}: {{ currentTimeText.second }}</div>
         <!-- <div class="bar"></div> -->
         <div class="center">
           <progressBar :progress="process"></progressBar>
         </div>
-        <div class="progressDuration">{{ duration.minutes }}:{{ duration.second }}</div>
+        <div class="progressDuration">{{ durationText.minutes }}:{{ durationText.second }}</div>
       </div>
       <div class="tools">
         <div class="circleBtn toolsBtn" @click="randomPlay">
@@ -119,7 +120,9 @@ export default defineComponent({
     const audioRef = ref(null);
     const audioStatus = ref(false);
     const show = ref(false);
-    const duration = ref({});
+    const durationText = ref({});
+    const currentTimeText = ref({});
+    const duration = ref(0);
     const process = ref(0);
 
     const currentSongs = computed(() => store.getters.getCurrentSongs);
@@ -218,6 +221,17 @@ export default defineComponent({
       audioEle.play();
       store.commit('setPlaying', true);
     }
+    // 进度条
+    const updateTime = (e) => {
+      process.value = e.target.currentTime / duration.value;
+      const currentTime = e.target.currentTime;
+      let minutes = util.buling(parseInt(currentTime / 60));
+      let second = util.buling(parseInt(currentTime % 60));
+      currentTimeText.value = {
+        'minutes': minutes,
+        'second': second
+      }
+    }
     // 播放歌曲
     const playMusic = () => {
       const audioEle = audioRef.value;
@@ -240,10 +254,11 @@ export default defineComponent({
       const durationx = audioEle.duration;
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
-      duration.value = {
+      durationText.value = {
         'minutes': minutes,
         'second': second
       }
+      duration.value = audioEle.duration;
     }
     // 随机播放
     const randomPlay = () => {
@@ -288,7 +303,8 @@ export default defineComponent({
       playing,
       audioStatus,
       show,
-      duration,
+      durationText,
+      currentTimeText,
       process,
       small,
       playMusic,
@@ -296,6 +312,7 @@ export default defineComponent({
       audioPause,
       prev,
       next,
+      updateTime,
       showBigPic,
       closePopup,
       randomPlay,

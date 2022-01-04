@@ -1,7 +1,15 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2022-01-04 08:59:27
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-04 11:48:44
+-->
 <template>
-  <div class="progress-bar">
+  <div class="progress-bar" ref="progressBar">
     <div class="bar-inner">
-      <div class="progress" ref="progress"></div>
+      <div class="progress" ref="progress" :style="widthStyle"></div>
       <div class="progress-btn-wrapper">
         <div class="progress-btn"></div>
       </div>
@@ -10,7 +18,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, watch, computed, ref } from "vue";
 export default defineComponent({
   name: "progressBar",
   props: {
@@ -19,7 +27,29 @@ export default defineComponent({
       default: 0,
     },
   },
-  setup() {},
+  setup(props) {
+    const transformX = ref(0);
+    console.log('进入');
+    console.log(props);
+    const progressBar = ref(null);
+    const progress = ref(null);
+    watch(() => props.progress, (newVal, oldVal) => {
+      if(!!newVal){
+        transformX.value = (progressBar.value.clientWidth) * newVal
+      }
+    })
+    const widthStyle = computed(() => {
+      console.log(transformX.value);
+      return {
+        width: `${transformX.value}px`
+      }
+    })
+    return {
+      progressBar,
+      progress,
+      widthStyle
+    }
+  }
 });
 </script>
 
