@@ -10,7 +10,11 @@
   <div class="progress-bar" ref="progressBar">
     <div class="bar-inner">
       <div class="progress" ref="progress" :style="widthStyle"></div>
-      <div class="progress-btn-wrapper">
+      <div class="progress-btn-wrapper" 
+        :style="btnStyle"
+        @touchstart.prevent="touchStart"
+        @touchmove.prevent="touchMove"
+        @touchend.prevent="touchEnd">
         <div class="progress-btn"></div>
       </div>
     </div>
@@ -27,27 +31,69 @@ export default defineComponent({
       default: 0,
     },
   },
+  emits: ['touchMove', 'touchEnd'],
   setup(props) {
     const transformX = ref(0);
     console.log('进入');
     console.log(props);
     const progressBar = ref(null);
     const progress = ref(null);
+    const progressTransform = ref({});
+    
+    // 监听歌曲进度变化用以修改进度条位置
     watch(() => props.progress, (newVal, oldVal) => {
       if(!!newVal){
         transformX.value = (progressBar.value.clientWidth) * newVal
       }
-    })
+    });
+
+    // 黄色进度条宽度
     const widthStyle = computed(() => {
-      console.log(transformX.value);
       return {
         width: `${transformX.value}px`
       }
+    });
+
+    // 按钮距离左边的位置
+    const btnStyle = computed(() => {
+        return {
+            transform: `translate3d(${transformX.value}px, 0, 0)`
+        }
     })
+
+    // 监听手指点击
+    const touchStart = e => {
+        // 设置开始滑动进度条时的启始位置和黄色进度条的width
+        progressTransform.value = {
+            pageX: e.touches[0].pageX,
+            beginWidth: progress.value.clientWidth
+        }
+    }
+
+    // 监听手指滑动
+    const touchMove = e => {
+        // 计算出本次移动距离上次移动到距离，左滑为负值右滑为正值
+        const delta = e.touches[0].pageX - progressTransform.value.pageX;
+        // 算出黄色进度条的长度，可以直接将width设为黄色进度条的宽度，按照比例来乘就不需要设置滑动超出的最小值和最大值
+        const width = progressTransform.value.beginWidth + delta;
+        // 算出内层进度条和外层进度条的比例，max和min的使用算出一个在0和1之间的值
+        const scale = Math.min(1, Math.max(width / progressBar.value.clientWidth , 0));
+        transformX.value = progressBar.value.clientWidth * scale;
+    }
+
+    // 监听手指离开
+    const touchEnd = e => {
+        console.log('离开');
+        console.log(progress.value.clientWidth / progressBar.value.clientWidth);
+    }
     return {
       progressBar,
       progress,
-      widthStyle
+      widthStyle,
+      btnStyle,
+      touchStart,
+      touchMove,
+      touchEnd
     }
   }
 });
