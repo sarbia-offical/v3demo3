@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-12-02 08:24:57
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-04 11:49:44
+ * @LastEditTime: 2022-01-05 10:09:05
 -->
 <template>
   <div v-show="fullScreen">
@@ -52,10 +52,14 @@
         </div>
       </div>
       <div class="progressBar">
-        <div class="progressCurrentTime">{{ currentTimeText.minutes }}: {{ currentTimeText.second }}</div>
+        <div class="progressCurrentTime">{{ currentTimeText.minutes }}:{{ currentTimeText.second }}</div>
         <!-- <div class="bar"></div> -->
         <div class="center">
-          <progressBar :progress="process"></progressBar>
+          <progressBar 
+          :progress="process"
+          @touchMove="progressTouchMove"
+          @touchEnd="progressTouchEnd">
+          </progressBar>
         </div>
         <div class="progressDuration">{{ durationText.minutes }}:{{ durationText.second }}</div>
       </div>
@@ -124,6 +128,7 @@ export default defineComponent({
     const currentTimeText = ref({});
     const duration = ref(0);
     const process = ref(0);
+    const processFlag = ref(false);
 
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
@@ -223,6 +228,9 @@ export default defineComponent({
     }
     // 进度条
     const updateTime = (e) => {
+      if(processFlag.value){
+        return;
+      }
       process.value = e.target.currentTime / duration.value;
       const currentTime = e.target.currentTime;
       let minutes = util.buling(parseInt(currentTime / 60));
@@ -252,6 +260,7 @@ export default defineComponent({
     const durationChange = () => {
       const audioEle = audioRef.value;
       const durationx = audioEle.duration;
+      console.log(durationx);
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
       durationText.value = {
@@ -275,6 +284,20 @@ export default defineComponent({
         status = constant.PLAY_MODE.sequence;
       }
       store.dispatch('changeMode', status)
+    }
+    // 进度条移动事件
+    const progressTouchMove = process => {
+      processFlag.value = true;
+    }
+    // 进度条停止拖动
+    const progressTouchEnd = process => {
+      console.log(process);
+      const audioEle = audioRef.value;
+      audioEle.currentTime = duration.value * process;
+      if(!playing.value){
+        store.commit('setPlaying', true);
+      }
+      processFlag.value = false;
     }
     // 意外情况暂停歌曲
     const audioPause = () => {
@@ -309,6 +332,8 @@ export default defineComponent({
       small,
       playMusic,
       durationChange,
+      progressTouchMove,
+      progressTouchEnd,
       audioPause,
       prev,
       next,
@@ -388,7 +413,7 @@ export default defineComponent({
         width: 1.8rem;
         margin: 0 auto;
         margin-top: .2rem;
-        font-size: .1rem;
+        font-size: .2rem;
         border: 1px solid orange;
         padding: .1rem;
         border-radius: .1rem;
