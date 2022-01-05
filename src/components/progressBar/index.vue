@@ -4,10 +4,10 @@
  * @Author: zouwenqin
  * @Date: 2022-01-04 08:59:27
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-04 11:48:44
+ * @LastEditTime: 2022-01-05 11:23:54
 -->
 <template>
-  <div class="progress-bar" ref="progressBar">
+  <div class="progress-bar" ref="progressBar" @click="barClick">
     <div class="bar-inner">
       <div class="progress" ref="progress" :style="widthStyle"></div>
       <div class="progress-btn-wrapper" 
@@ -32,7 +32,7 @@ export default defineComponent({
     },
   },
   emits: ['touchMove', 'touchEnd'],
-  setup(props) {
+  setup(props, { emit }) {
     const transformX = ref(0);
     console.log('进入');
     console.log(props);
@@ -79,12 +79,21 @@ export default defineComponent({
         // 算出内层进度条和外层进度条的比例，max和min的使用算出一个在0和1之间的值
         const scale = Math.min(1, Math.max(width / progressBar.value.clientWidth , 0));
         transformX.value = progressBar.value.clientWidth * scale;
+        emit('touchMove', scale);
     }
 
     // 监听手指离开
     const touchEnd = e => {
-        console.log('离开');
-        console.log(progress.value.clientWidth / progressBar.value.clientWidth);
+      console.log('离开');
+      const scale = progress.value.clientWidth / progressBar.value.clientWidth;
+      emit('touchEnd', scale);
+    }
+
+    // 进度条点击
+    const barClick = e => {
+      const left = progressBar.value.getBoundingClientRect().left;
+      const scale = (e.pageX - left) / progressBar.value.clientWidth;
+      emit('touchEnd', scale);
     }
     return {
       progressBar,
@@ -93,7 +102,8 @@ export default defineComponent({
       btnStyle,
       touchStart,
       touchMove,
-      touchEnd
+      touchEnd,
+      barClick
     }
   }
 });

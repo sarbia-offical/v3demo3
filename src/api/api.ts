@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-08-17 15:48:37
  * @LastEditors: zouwenqin
- * @LastEditTime: 2021-11-03 10:17:23
+ * @LastEditTime: 2022-01-05 15:45:11
  */
 import request from '@/utils/request';
 type returnType<T> = Promise<T>;
@@ -58,7 +58,7 @@ export default {
         params
     }),
 
-    // 获取歌手所有单曲
+    // 获取歌手部分热门歌曲
     _getSingerDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
         url: '/api/artists',
         method: 'GET',
@@ -70,6 +70,13 @@ export default {
     // 获取歌手专辑
     _getSingerAlbum: <K> (params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/album',
+        method: 'GET',
+        params: params
+    }),
+
+    // 获取歌手全部歌曲
+    _getSingerAllSongs: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+        url: '/api/artist/songs',
         method: 'GET',
         params: params
     }),

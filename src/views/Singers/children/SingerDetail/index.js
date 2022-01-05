@@ -27,6 +27,11 @@ export default defineComponent({
         const albumsScrollRef = ref(null);
         const songsRef = ref(null);
         const pullDown = ref(false);
+        // 歌曲查询条件
+        const songsSearchForm = ref();
+        // 专辑查询条件
+        const albumSearchForm = ref({})
+
         let bgImageY = 0;
         const startPoint = ref({
             x: 0,
@@ -41,21 +46,31 @@ export default defineComponent({
             artist: {},
             list: [],
             ablumList: [],
-            limit: 50,
-            offset: 0,
             singerId: 0
         });
         const route = useRoute();
+        const router = useRouter();
         const store = useStore();
         onMounted(() => {
             const id = route.params.id;
             state.singerId = id;
+            albumSearchForm.value = {
+                id,
+                limit: 50,
+                offset: 0
+            }
+            songsSearchForm.value = {
+                id,
+                order: 'hot',
+                limit: 70,
+                offset: 0
+            }
+            // 获取歌手相关信息
             getSingerDetail(state.singerId);
-            getSingerAlbum({
-                limit: state.limit,
-                offset: state.offset,
-                id: state.singerId
-            });
+            // 获取歌手专辑
+            getSingerAlbum(albumSearchForm.value);
+            // 获取歌手歌曲
+            getSingerSongs(songsSearchForm.value);
             imageHeight.value = bgImageRef.value.clientHeight;
             navBarHeight.value = topNavBarRef.value.$el.clientHeight;
             let options = {
@@ -74,46 +89,40 @@ export default defineComponent({
             initialDomRef(albumsScrollRef, options);
         })
         const loading = computed(() => !state.list.length);
+        
         // 图片背景样式
         const bgImageStyle = computed(() => {
             let num = bgImageY / bgImageRef?.value?.clientHeight;
             let scale = pullDown.value && num >= 1 ? `scale(${num})` : 'scale(1)'
             let backDropFilter = !pullDown.value ? `backdropFilter(0px)` : `backdropFilter(0px)`
             return {
-                backgroundImage: `url(${state.artist.img1v1Url}?param=375y375)`,
+                backgroundImage: `url(${state.artist.cover}?param=375y375)`,
                 paddingTop: '100%',
                 backgroundSize: 'cover',
                 transform: `${scale}`,
                 transition: 'all .1s linear'
             }
         })
-        const router = useRouter();
         // 获取歌手相关信息
         const getSingerDetail = async (id) => {
-            await nextTick();
-            const response = await SingerDetail.getSingerDetail(id + '');
-            const { artist, hotSongs, code: code1, msg } = response;
-            if(code1 === 200){
+            const { code, data, message } = await SingerDetail.getArtistDetail(id + '');
+            const { artist } = data;
+            if(code == 200){
                 state.artist = artist;
-                state.list = hotSongs;
-                store.dispatch('initialMusicPlay', {list: state.list, playMode: constant.PLAY_MODE.sequence});
             } else {
                 Dialog({
                     title: '请求异常 =。=',
-                    message: msg,
+                    message,
                     className: 'dialogStyle'
                 })
                 state.artist = {};
                 state.list = [];
             }
-            const { code: code2, data, msg: msg2 } = await SingerDetail.getArtistDetail(id + '');
             store.commit('setSinger', data)
-            return response;
         }
         // 获取歌手所有专辑
         const getSingerAlbum = async (params) => {
             const response = await SingerDetail.getSingerAlbum(params);
-            console.log(response)
             const { hotAlbums, code, msg } = response;
             if(code === 200){
                 const arr = hotAlbums.map((item, index) => ({
@@ -126,6 +135,23 @@ export default defineComponent({
                 state.ablumList = state.ablumList.concat(arr);
             }
             return response;
+        }
+        // 获取歌手所有歌曲
+        const getSingerSongs = async (params) => {
+            await nextTick();
+            const response = await SingerDetail.getSingerAllSongs(params);
+            const { code, more, msg, songs, total } = response;
+            if(code === 200){
+                state.list = songs;
+                store.dispatch('initialMusicPlay', {list: state.list, playMode: constant.PLAY_MODE.sequence});
+            } else {
+                Dialog({
+                    title: '请求异常 =。=',
+                    message: msg,
+                    className: 'dialogStyle'
+                })
+                state.list = [];
+            }
         }
         // 返回事件
         const leftClick = () => {
