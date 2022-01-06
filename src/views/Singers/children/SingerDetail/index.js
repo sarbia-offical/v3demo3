@@ -1,15 +1,17 @@
 import { defineComponent, reactive, ref, onMounted, computed, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useStore, mapActions } from 'vuex';
+import _ from 'lodash';
 import topNavBar from '@/components/topNavBar/index.vue';
 import SingerDetail from '@/service/singerDetail.service';
 import constant from '@/assets/js/constant';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 import ObserveDOM from '@better-scroll/observe-dom';
-import ScrollBar from '@better-scroll/scroll-bar'
-import {Dialog} from "vant";
-BScroll.use(MouseWheel).use(ObserveDOM).use(ScrollBar);
+import ScrollBar from '@better-scroll/scroll-bar';
+import PullUp from '@better-scroll/pull-up';
+import {Dialog,Toast} from "vant";
+BScroll.use(ObserveDOM).use(ScrollBar).use(PullUp);
 export default defineComponent({
     name: 'singerDetail',
     props: ['singer'],
@@ -62,7 +64,7 @@ export default defineComponent({
             songsSearchForm.value = {
                 id,
                 order: 'hot',
-                limit: 70,
+                limit: 20,
                 offset: 0
             }
             // 获取歌手相关信息
@@ -75,18 +77,25 @@ export default defineComponent({
             navBarHeight.value = topNavBarRef.value.$el.clientHeight;
             let options = {
                 click: true,
-                probeType: 2,
-                mouseWheel: {
-                    speed: 20,
-                    invert: false,
-                    easeTime: 300
-                },
+                probeType: 3,
                 observeDOM: true,
                 scrollbar: true,
-                stopPropagation: false
+                stopPropagation: false,
+                pullUpLoad: true
             };
-            initialDomRef(songsScrollRef, options);
-            initialDomRef(albumsScrollRef, options);
+            const songsScroll = initialDomRef(songsScrollRef, options);
+            const albumScoll = initialDomRef(albumsScrollRef, options);
+            songsScroll.on('pullingUp', () => {
+                let query = Object.assign({}, songsSearchForm.value);
+                query.offset = query.limit;
+                query.limit = query.limit + 20;
+                getSingerSongs(query, () => {
+                    songsSearchForm.value.offset = songsSearchForm.value.limit;
+                    songsSearchForm.value.limit = songsSearchForm.value.limit + 20;
+                    songsScroll.finishPullUp();
+                    songsScroll.refresh();
+                })
+            })
         })
         const loading = computed(() => !state.list.length);
         
@@ -116,7 +125,6 @@ export default defineComponent({
                     className: 'dialogStyle'
                 })
                 state.artist = {};
-                state.list = [];
             }
             store.commit('setSinger', data)
         }
@@ -137,13 +145,32 @@ export default defineComponent({
             return response;
         }
         // 获取歌手所有歌曲
-        const getSingerSongs = async (params) => {
+        const getSingerSongs = async (params, callBack) => {
             await nextTick();
+            Toast.loading({
+                message: '加载中...',
+                forbidClick: true,
+                duration: 0
+            });
             const response = await SingerDetail.getSingerAllSongs(params);
             const { code, more, msg, songs, total } = response;
             if(code === 200){
-                state.list = songs;
                 store.dispatch('initialMusicPlay', {list: state.list, playMode: constant.PLAY_MODE.sequence});
+                const ids = songs.map(ele => ele.id).join(',');
+                const { songs: songs2, privileges, code: code2 } = await SingerDetail.getSongsDetail(ids);
+                if(code2 == 200){
+                    state.list = state.list.concat(songs2);
+                    store.dispatch('initialMusicPlay', {list: state.list, playMode: constant.PLAY_MODE.sequence});
+                    callBack && callBack();
+                    Toast.clear();
+                } else {
+                    Dialog({
+                        title: '请求异常 =。=',
+                        message: '歌曲详情接口异常',
+                        className: 'dialogStyle'
+                    })
+                    state.list = [];
+                }
             } else {
                 Dialog({
                     title: '请求异常 =。=',
