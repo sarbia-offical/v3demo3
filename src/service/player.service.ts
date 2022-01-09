@@ -6,4 +6,5 @@ interface IResponseType{
 
 export default {
     getSongUrl: (id: string) => api._getSongUrl<IResponseType>(id),
+    getSongLyric: (id: string) => api._getSongLyric(id)
 }
