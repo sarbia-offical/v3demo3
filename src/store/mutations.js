@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2021-12-03 08:43:49
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-10 15:18:42
+ */
 const mutations = {
     // 设置播放歌曲的下标
     setCurrentIndex: (state, currentIndex) => {
@@ -26,6 +34,18 @@ const mutations = {
     // 设置歌手
     setSinger: (state, singer) => {
         state.singer = singer;
+    },
+    // 设置歌词
+    saveLyric: (state, { song, lyric }) => {
+        console.log(lyric);
+        console.log(song);
+        let list = state.sequenceList;
+        list.map(ele => {
+            if(ele.id == song.id){
+                ele['lyric'] = lyric;
+            }
+            return ele;
+        })
     }
 }
 export default mutations;

@@ -242,7 +242,10 @@ export default defineComponent({
         const choseSongeItem = (item, index) => {
             console.log(item);
             let index2 = store.state.playList.findIndex(ele => ele.id == item.id);
-            store.dispatch('setMusicPlay', index2)
+            store.commit('setCurrentIndex', null);
+            setTimeout(() => {
+                store.dispatch('setMusicPlay', index2)
+            }, 500)
         }
         return {
             bgImageStyle,

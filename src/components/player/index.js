@@ -50,6 +50,9 @@ export default defineComponent({
     const currentIndex = computed(() => store.state.currentIndex);
     // watch
     watch(currentSongs, async (newVal, oldVal) => {
+      if(!fullScreen.value){
+        return;
+      }
       if(!newVal.id){
         return ;
       }
@@ -61,7 +64,6 @@ export default defineComponent({
       }
       audioStatus.value = true;
       audioEle.src = res.data[0].url;
-      console.log(playing.value);
       if(playing.value){
         audioEle.play();
       }

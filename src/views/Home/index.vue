@@ -1,6 +1,14 @@
 <template>
   <div class="home">
     <Body @lftClick="headBarLeftClick" @rgtClick="headBarRightClick"></Body>
+    <div class="searchInput">
+      <div class="inputBlock">
+        <div class="choseType"></div>
+        <div class="other">
+          <input type="text" style="height: 100%; width: 90%;" @focus="inputFocus"> 
+        </div>
+      </div>
+    </div>
     <van-popup v-model:show="state.showLeft" position="left" class="leftPopup" :style="{ width: '80vw', height: '100vh' }">
       <SidebarMenu></SidebarMenu>
     </van-popup>
