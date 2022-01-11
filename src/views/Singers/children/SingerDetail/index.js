@@ -64,8 +64,9 @@ export default defineComponent({
             songsSearchForm.value = {
                 id,
                 order: 'hot',
+                size: 0,
+                offset: 0,
                 limit: 20,
-                offset: 0
             }
             // 获取歌手相关信息
             getSingerDetail(state.singerId);
@@ -78,6 +79,11 @@ export default defineComponent({
             let options = {
                 click: true,
                 probeType: 3,
+                mouseWheel: {
+                    speed: 20,
+                    invert: false,
+                    easeTime: 300
+                },
                 observeDOM: true,
                 scrollbar: true,
                 stopPropagation: false,
@@ -87,11 +93,11 @@ export default defineComponent({
             const albumScoll = initialDomRef(albumsScrollRef, options);
             songsScroll.on('pullingUp', () => {
                 let query = Object.assign({}, songsSearchForm.value);
-                query.offset = query.limit;
-                query.limit = query.limit + 20;
+                query.size = query.size + 1;
+                query.offset = query.limit * query.size;
                 getSingerSongs(query, () => {
-                    songsSearchForm.value.offset = songsSearchForm.value.limit;
-                    songsSearchForm.value.limit = songsSearchForm.value.limit + 20;
+                    songsSearchForm.value.size = songsSearchForm.value.size + 1;
+                    songsSearchForm.value.offset = songsSearchForm.value.limit * songsSearchForm.value.size;
                     songsScroll.finishPullUp();
                     songsScroll.refresh();
                 })
@@ -236,7 +242,10 @@ export default defineComponent({
         const choseSongeItem = (item, index) => {
             console.log(item);
             let index2 = store.state.playList.findIndex(ele => ele.id == item.id);
-            store.dispatch('setMusicPlay', index2)
+            store.commit('setCurrentIndex', null);
+            setTimeout(() => {
+                store.dispatch('setMusicPlay', index2)
+            }, 500)
         }
         return {
             bgImageStyle,

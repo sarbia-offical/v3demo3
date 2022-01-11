@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-12-01 09:54:11
  * @LastEditors: zouwenqin
- * @LastEditTime: 2021-12-02 15:16:14
+ * @LastEditTime: 2022-01-10 15:18:46
  */
 import util from '../assets/js/util';
 import constant from '../assets/js/constant';
@@ -49,7 +49,6 @@ const actions = {
         commit('setCurrentIndex', currentIndex);
         commit('setPlayMode', mode);
     },
-
     test: ( { commit, dispatch, state } ) => {
         console.log(commit);
     }

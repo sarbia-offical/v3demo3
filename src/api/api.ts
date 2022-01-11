@@ -10,56 +10,56 @@ import request from '@/utils/request';
 type returnType<T> = Promise<T>;
 export default {
     // 根据名称获取所有歌曲
-    _getSongsByName : <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSongsByName: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/cloudsearch',
         method: 'GET',
         params
     }),
 
     // 获取歌曲url
-    _getSongById: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSongById: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/song/url',
         method: 'GET',
         params
     }),
 
     // 获取歌词
-    _getSongLyric: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSongLyric: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/lyric',
         method: 'GET',
         params
     }),
 
     // 推荐歌单
-    _Personalized: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _Personalized: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/personalized',
         method: 'GET',
         params
     }),
 
     // 根据条件搜索歌手
-    _getArtist: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getArtist: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/list',
         method: 'GET',
         params
     }),
 
     // 查询歌手的所有歌曲
-    _getArtistSongs: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getArtistSongs: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/songs',
         method: 'GET',
         params
     }),
 
     // 查询热门歌手
-    _getTopArtists: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getTopArtists: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/top/artists',
         method: 'GET',
         params
     }),
 
     // 获取歌手部分热门歌曲
-    _getSingerDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+    _getSingerDetail: <K>(id: string): returnType<K> => request.getAxiosFactory()({
         url: '/api/artists',
         method: 'GET',
         params: {
@@ -68,28 +68,28 @@ export default {
     }),
 
     // 获取歌手专辑
-    _getSingerAlbum: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSingerAlbum: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/album',
         method: 'GET',
         params: params
     }),
 
     // 获取歌手全部歌曲
-    _getSingerAllSongs: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSingerAllSongs: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/songs',
         method: 'GET',
         params: params
     }),
-    
+
     // 查询歌曲详情
-    _getSongsDetail: <K> (params: any): returnType<K> => request.getAxiosFactory()({
+    _getSongsDetail: <K>(params: any): returnType<K> => request.getAxiosFactory()({
         url: '/api/song/detail',
         method: 'GET',
         params: params
     }),
 
     // 获取歌曲url
-    _getSongUrl: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+    _getSongUrl: <K>(id: string): returnType<K> => request.getAxiosFactory()({
         url: '/api/song/url',
         method: 'GET',
         params: {
@@ -98,11 +98,11 @@ export default {
     }),
 
     // 获取歌手详情
-    _getArtistDetail: <K> (id: string): returnType<K> => request.getAxiosFactory()({
+    _getArtistDetail: <K>(id: string): returnType<K> => request.getAxiosFactory()({
         url: '/api/artist/detail',
         method: 'GET',
         params: {
             id: id
         }
     })
- } 
+} 
