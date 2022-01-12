@@ -1,6 +1,12 @@
+/*
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2021-11-15 10:37:05
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-12 16:35:22
+ */
 import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home/index.vue';
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -9,7 +15,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Home',
     name: 'Home',
-    component: () => import('@/views/Home/index.vue')
+    component: () => import('@/views/Home/index.vue'),
+    children: [
+      {
+        path: '/SearchPage/:keywords/:type',
+        component: () => import('@/views/Home/children/searchPage/index.vue')
+      }
+    ]
   },
   {
     path: '/Singers',

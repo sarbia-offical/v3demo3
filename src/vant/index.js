@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-11-15 10:37:05
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-11 16:23:59
+ * @LastEditTime: 2022-01-12 15:26:56
  */
 import 'vant/es/button/style';
 import { Button } from "vant/es/button";
@@ -21,8 +21,16 @@ import { Toast } from 'vant';
 import 'vant/es/toast/style';
 import { CellGroup } from 'vant/es/cell-group'
 import 'vant/es/cell-group/style'
+import { Cell } from 'vant/es/cell'
+import 'vant/es/cell/style'
 import { Field } from 'vant/es/field';
 import 'vant/es/field/style';
+import { RadioGroup } from 'vant/es/radio-group';
+import 'vant/es/radio-group/style';
+import { Radio } from 'vant/es/radio';
+import 'vant/es/radio/style';
+import { List } from 'vant/es/list';
+import 'vant/es/list/style'
 export function registerVantUIComponent(app){
     app.component('van-button', Button)
     .component('van-swipe',Swipe)
@@ -30,6 +38,10 @@ export function registerVantUIComponent(app){
     .component('van-popup', Popup)
     .component('van-navbar', NavBar)
     .component('van-cell-group', CellGroup)
-    .component('van-field',Field);
+    .component('van-cell',Cell)
+    .component('van-field',Field)
+    .component('van-radio-group', RadioGroup)
+    .component('van-radio', Radio)
+    .component('van-list', List);
     app.use(Toast);
 }
