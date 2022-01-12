@@ -6,7 +6,7 @@
  * @LastEditors: zouwenqin
  * @LastEditTime: 2022-01-12 17:00:25
  */
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import topNavBar from '@/components/topNavBar/index.vue';
 import Home from '@/service/home.service';
@@ -23,7 +23,12 @@ export default defineComponent({
         const state = reactive({
             texts: ['搜索结果'],
         })
-        console.log(route.params);
+
+        onMounted(async () => {
+            const { keywords, type } = route.params;
+            const res = await Home.search({keywords, type})
+            console.log(res);
+        })
 
         // methods
         const leftClick = () => {
