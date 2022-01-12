@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-08-17 15:48:37
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-06 09:24:37
+ * @LastEditTime: 2022-01-12 11:24:06
  */
 import request from '@/utils/request';
 type returnType<T> = Promise<T>;
@@ -104,5 +104,12 @@ export default {
         params: {
             id: id
         }
+    }),
+
+    // 搜索接口
+    _search: <K>(params: any): returnType<K> => request.getAxiosFactory()({
+        url: '/api/search',
+        method: 'GET',
+        params: params
     })
 } 

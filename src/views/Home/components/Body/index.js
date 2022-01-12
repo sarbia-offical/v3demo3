@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-11-15 10:37:05
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-11 16:53:30
+ * @LastEditTime: 2022-01-12 17:25:37
  */
 import {
     defineComponent,
@@ -46,17 +46,8 @@ export default defineComponent({
             emit('lftClick')
         };
         const headBarRightClick = () => {
-            emit('rgtClick');
+            window.location.href = 'https://github.com/sarbia-offical/v3demo3'
         };
-        const inputFocus = () => {
-            setTimeout(() => {
-                document.querySelector('body').style.height = `${height}px`;
-            },100)
-            
-        }
-        window.onresize = () => {
-            document.querySelector('body').style.height = `${height}px`;
-        }
         // computed
         let loading = computed(() => {
             return flag.value;
@@ -143,8 +134,9 @@ export default defineComponent({
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, canvas.width, canvas.height);
-
-        document.body.style.background = 'url(' + canvas.toDataURL('image/png') + ')';
+        setTimeout(() => {
+            document.querySelector('.cloud').style.background = 'url(' + canvas.toDataURL('image/png') + ')';
+        })
 
         // Clouds
 
@@ -289,8 +281,7 @@ export default defineComponent({
             loadingText,
             textValue,
             headBarLeftClick,
-            headBarRightClick,
-            inputFocus
+            headBarRightClick
         }
     }
 })

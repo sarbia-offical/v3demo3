@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-11-15 10:37:05
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-11 17:04:37
+ * @LastEditTime: 2022-01-12 17:27:03
 -->
 <template>
   <div class="container" v-loading:[loadingText]="{flag: loading}">
@@ -12,7 +12,7 @@
       <div class="top">
         <iconComponent :iconPath="'icon-sucai'" :iconColor="'#ffffff'" @click="headBarLeftClick"></iconComponent>
         <div class="title">Kalinka</div>
-        <iconComponent :iconPath="'icon-shenglvehao'" :iconColor="'#ffffff'" @click="headBarRightClick"></iconComponent>
+        <iconComponent :iconPath="'icon-github'" :iconColor="'#ffffff'" @click="headBarRightClick"></iconComponent>
       </div>
     </div>
     <div class="cloud"></div>
