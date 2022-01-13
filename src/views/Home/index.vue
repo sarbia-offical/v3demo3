@@ -64,3 +64,4 @@ export default Home;
 <style scoped lang="scss">
   @import "index.scss";
 </style>
+ No newline at end of file
