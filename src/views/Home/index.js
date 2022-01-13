@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2021-11-15 10:37:05
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-13 17:26:01
+ */
 import {
     defineComponent,
     reactive,
@@ -8,11 +16,13 @@ import {
 import Body from './components/Body/index.vue';
 import SidebarMenu from './components/SidebarMenu/index.vue';
 import { useRoute, useRouter } from 'vue-router';
+import storage from '@/utils/storage';
 export default defineComponent({
     name: 'Home',
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const storagex = storage.getStorageFactory();
         // reactive
         const state = reactive({
             showLeft: false,
@@ -51,10 +61,20 @@ export default defineComponent({
         const typeCheck = () => {
             state.flag = true;
         }
-        const search = async () => {
-            router.push({
-                path: `/SearchPage/${searchText.value}/${type.value}`
+        const search = () => {
+            let history = storagex.get('history') || [];
+            history.push({
+                keywords: searchText.value?.trim(),
+                type: type.value
             })
+            storagex.set('history', history);
+            // router.push({
+            //     path: `/SearchPage/${searchText.value?.trim()}/${type.value}`
+            // })
+        }
+        const choseTag = (event) => {
+            let index = event.target.dataset.currentindex;
+            console.log(index);
         }
         return {
             state,
@@ -66,7 +86,8 @@ export default defineComponent({
             headBarLeftClick,
             headBarRightClick,
             typeCheck,
-            search
+            search,
+            choseTag
         }
     },
     components: {
