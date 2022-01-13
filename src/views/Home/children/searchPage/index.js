@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2022-01-12 16:27:52
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-12 17:00:25
+ * @LastEditTime: 2022-01-13 10:32:28
  */
 import { defineComponent, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -21,7 +21,7 @@ export default defineComponent({
 
         // reactive
         const state = reactive({
-            texts: ['搜索结果'],
+            texts: [' '],
         })
 
         onMounted(async () => {

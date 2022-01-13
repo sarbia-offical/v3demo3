@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-11-15 10:37:05
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-12 17:22:12
+ * @LastEditTime: 2022-01-13 17:23:12
 -->
 <template>
   <div class="home">
@@ -15,12 +15,16 @@
           <iconComponent :iconPath="'icon-fenlei'" :iconColor="'#008000'" @click="typeCheck"></iconComponent>
         </div>
         <div class="other">
-          <input type="text" @focus="inputFocus" placeholder="歌曲/专辑/歌手，左侧图标可切换类型" v-model="searchText">
-          <div class="btn" @click="search">🔍</div>
+          <input type="text" placeholder="歌曲/专辑/歌手，左侧图标可切换类型" v-model="searchText">
+          <div class="btn" @click="search">搜索 🔍</div>
         </div>
       </div>
     </div>
-    <div class="history">XXX</div>
+    <div class="history" @click="choseTag">
+      <div class="tags">
+        <span class="tag" v-for="(item, index) in 8" :key="index" :data-currentIndex="index">AAAA</span>
+      </div>
+    </div>
     <van-popup v-model:show="state.showLeft" position="left" class="leftPopup" :style="{ width: '80vw', height: '100vh' }">
       <SidebarMenu></SidebarMenu>
     </van-popup>
