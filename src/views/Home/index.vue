@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-11-15 10:37:05
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-13 17:23:12
+ * @LastEditTime: 2022-01-14 11:53:04
 -->
 <template>
   <div class="home">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="history" @click="choseTag">
+    <div class="history" @click="choseTag" v-if="false">
       <div class="tags">
         <span class="tag" v-for="(item, index) in 8" :key="index" :data-currentIndex="index">AAAA</span>
       </div>
