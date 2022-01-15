@@ -3,8 +3,8 @@
  * @version: 
  * @Author: zouWenQin
  * @Date: 2021-08-17 15:41:47
- * @LastEditors: zouWenQin
- * @LastEditTime: 2021-08-17 15:48:13
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-13 11:37:41
  */
 const axios = require('axios');
 import constant from '@/assets/js/constant';
@@ -34,7 +34,6 @@ export default class {
             const {message, code} = error;
             return { code: constant.ERROR_CODE[code], msg: message }
         })
-        return this.axiosFactory;
     }
 
     /**
