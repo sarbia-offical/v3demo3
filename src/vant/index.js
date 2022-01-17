@@ -17,7 +17,6 @@ import { SwipeItem } from 'vant/es/swipe-item';
 import 'vant/es/nav-bar/style';
 import { NavBar } from 'vant/es/nav-bar';
 import 'vant/es/dialog/style';
-import { Toast } from 'vant';
 import 'vant/es/toast/style';
 import { CellGroup } from 'vant/es/cell-group'
 import 'vant/es/cell-group/style'
@@ -30,7 +29,8 @@ import 'vant/es/radio-group/style';
 import { Radio } from 'vant/es/radio';
 import 'vant/es/radio/style';
 import { List } from 'vant/es/list';
-import 'vant/es/list/style'
+import 'vant/es/list/style';
+import 'vant/es/notify/style';
 export function registerVantUIComponent(app){
     app.component('van-button', Button)
     .component('van-swipe',Swipe)
@@ -43,5 +43,4 @@ export function registerVantUIComponent(app){
     .component('van-radio-group', RadioGroup)
     .component('van-radio', Radio)
     .component('van-list', List);
-    app.use(Toast);
 }
