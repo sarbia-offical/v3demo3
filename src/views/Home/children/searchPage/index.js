@@ -41,6 +41,7 @@ export default defineComponent({
         onMounted(async () => {
             const { keywords } = route.params;
             const res = await Home.searchAllParams(keywords);
+            console.log(res);
             state.searchAll = res;
             const options = {
                 click: true,

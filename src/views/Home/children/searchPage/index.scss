@@ -25,6 +25,20 @@
                         width: 3rem;
                         background-color: #e5dede;
                         border-radius: 5px;
+                        overflow: hidden;
+                        .pic{
+                            img{
+                                width: 100%;
+                            }
+                        }
+                    }
+                    .text{
+                        margin-left: .1rem;
+                        font-size: .3rem;
+                        text-align: left;
+                        div{
+                            margin-top: .1rem;
+                        }
                     }
                 }
                 .scroll-item ~ .scroll-item{

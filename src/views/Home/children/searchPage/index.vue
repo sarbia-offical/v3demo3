@@ -14,7 +14,13 @@
                 <div class="scroll-content">
                     <div class="scroll-item" v-for="(item, index) in state.searchAll[1]?.arr" :key="index">
                         <div class="singer-avatar">
-                            {{ item.name }}
+                            <div class="pic">
+                                <img v-lazy="item.picUrl + '?param=200y200'">
+                            </div>
+                        </div>
+                        <div class="text">
+                            <div>{{ item.name }}</div>
+                            <div style="color: #969696; font-size: .2rem">{{ item.artist.name }}</div>
                         </div>
                     </div>
                 </div>
