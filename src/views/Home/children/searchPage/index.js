@@ -6,10 +6,13 @@
  * @LastEditors: zouwenqin
  * @LastEditTime: 2022-01-13 10:32:28
  */
-import { defineComponent, reactive, onMounted } from 'vue';
+import { defineComponent, reactive, onMounted, computed, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import topNavBar from '@/components/topNavBar/index.vue';
 import Home from '@/service/home.service';
+import BScroll from '@better-scroll/core';
+import ObserveDOM from '@better-scroll/observe-dom';
+BScroll.use(ObserveDOM)
 export default defineComponent({
     name: 'searchPage',
     components: {
@@ -18,31 +21,50 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
-
-        // reactive
+        const singerScroll = ref(null);
+        const loadingText = ref('正在努力搜索~');
         const state = reactive({
-            texts: [' '],
+            types: { '0': '模糊查询', '1': '歌曲', '10': '专辑', 100: '歌手' },
+            searchAll: []
         })
 
-        onMounted(async () => {
+        // computed
+        const texts = computed(() => {
             const { keywords, type } = route.params;
-            const res = await Home.search({keywords, type})
-            console.log(res);
+            return [`${state.types[type]}`];
+        })
+
+        const loading = computed(() => {
+            return !state.searchAll.length;
+        });
+
+        onMounted(async () => {
+            const { keywords } = route.params;
+            const res = await Home.searchAllParams(keywords);
+            state.searchAll = res;
+            const options = {
+                click: true,
+                scrollX: true,
+                scrollY: false,
+                mouseWheel: true,
+                observeDOM: true
+            }
+            initialDomRef(singerScroll, options);
         })
 
         // methods
         const leftClick = () => {
             router.push({ name: 'Home' })
         }
+        const initialDomRef = (domRef, setting) => new BScroll(domRef.value, setting);
         
         return {
+            texts,
+            singerScroll,
+            loading,
+            loadingText,
             state,
             leftClick
         }
-        // const res = await Home.search({
-        //     type: type.value,
-        //     keywords: searchText.value
-        // });
-        // console.log(res);
     },
 })

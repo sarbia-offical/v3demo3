@@ -17,6 +17,8 @@ import Body from './components/Body/index.vue';
 import SidebarMenu from './components/SidebarMenu/index.vue';
 import { useRoute, useRouter } from 'vue-router';
 import storage from '@/utils/storage';
+import { Notify } from 'vant';
+import Home from '@/service/home.service';
 export default defineComponent({
     name: 'Home',
     setup() {
@@ -29,7 +31,7 @@ export default defineComponent({
             showRight: false,
             flag: false,
             list: [],
-            types: ['1', '10', '100']
+            types: ['0', '1', '10', '100']
         });
 
         // ref
@@ -61,16 +63,20 @@ export default defineComponent({
         const typeCheck = () => {
             state.flag = true;
         }
-        const search = () => {
+        const search = async () => {
+            if(searchText.value == null || searchText.value == undefined || searchText.value.trim() == ''){
+                Notify('请输入查询内容');
+                return;
+            }
             let history = storagex.get('history') || [];
             history.push({
                 keywords: searchText.value?.trim(),
                 type: type.value
             })
             storagex.set('history', history);
-            // router.push({
-            //     path: `/SearchPage/${searchText.value?.trim()}/${type.value}`
-            // })
+            router.push({
+                path: `/SearchPage/${searchText.value?.trim()}/${type.value}`
+            })
         }
         const choseTag = (event) => {
             let index = event.target.dataset.currentindex;

@@ -6,4 +6,31 @@
     right: 0;
     background-color: #ffffff;
     z-index: 999;
+    .singer-container{
+        .scroll-wrapper{
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            margin-top: .3rem;
+            white-space: nowrap;
+            .scroll-content{
+                display: inline-block;
+                overflow: hidden;
+                .scroll-item{
+                    display: inline-block;
+                    text-align: center;
+                    .singer-avatar{
+                        @include aic_jcc();
+                        height: 3rem;
+                        width: 3rem;
+                        background-color: #e5dede;
+                        border-radius: 5px;
+                    }
+                }
+                .scroll-item ~ .scroll-item{
+                    margin-left: .3rem;
+                }
+            }
+        }
+    }
 }

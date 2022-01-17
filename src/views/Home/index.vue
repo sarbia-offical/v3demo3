@@ -35,19 +35,24 @@
       <div style="width: 100%; height: 100%">
         <van-radio-group v-model="radio">
           <van-cell-group>
-            <van-cell title="歌曲" clickable @click="radio = '0'">
+            <van-cell title="模糊查询" clickable @click="radio = '0'">
               <template #right-icon>
                 <van-radio name="0" />
               </template>
             </van-cell>
-            <van-cell title="专辑" clickable @click="radio = '1'">
+            <van-cell title="歌曲" clickable @click="radio = '1'">
               <template #right-icon>
                 <van-radio name="1" />
               </template>
             </van-cell>
-            <van-cell title="歌手" clickable @click="radio = '2'">
+            <van-cell title="专辑" clickable @click="radio = '2'">
               <template #right-icon>
                 <van-radio name="2" />
+              </template>
+            </van-cell>
+            <van-cell title="歌手" clickable @click="radio = '3'">
+              <template #right-icon>
+                <van-radio name="3" />
               </template>
             </van-cell>
           </van-cell-group>
