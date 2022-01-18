@@ -12,7 +12,7 @@
       <div class="singerSlide-wrapper" ref="singerSlideRef">
         <div class="singerSlide-content">
           <div class="singerSlide-item"
-           v-for="(item, index) in state.artists?.slice(0,10)"
+           v-for="(item, index) in state.artists"
            :key="index"
            @click="artistClick(item, index)"
           >
