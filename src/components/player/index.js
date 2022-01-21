@@ -84,7 +84,7 @@ export default defineComponent({
     })
 
     // hooks
-    userLyric();
+    const lyricHooks = userLyric();
 
     // methods
     // 缩小事件
@@ -139,11 +139,11 @@ export default defineComponent({
         'minutes': minutes,
         'second': second
       }
+      lyricHooks.getLyricIndex(e.target.currentTime);
     }
     // 播放歌曲
     const playMusic = () => {
       const audioEle = audioRef.value;
-      console.log(audioEle.paused);
       if(!store.state.playing){
         audioEle.play();
       } else {
@@ -160,7 +160,6 @@ export default defineComponent({
     const durationChange = () => {
       const audioEle = audioRef.value;
       const durationx = audioEle.duration;
-      console.log(durationx);
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
       durationText.value = {
@@ -191,7 +190,6 @@ export default defineComponent({
     }
     // 进度条停止拖动
     const progressTouchEnd = process => {
-      console.log(process);
       const audioEle = audioRef.value;
       audioEle.currentTime = duration.value * process;
       if(!playing.value){

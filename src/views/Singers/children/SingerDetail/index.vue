@@ -40,9 +40,9 @@
                     <img v-lazy="item['al'].picUrl + '?param=200y200'">
                   </div>
                   <div class="singer">
-                    <div class="van-multi-ellipsis--l2">{{ item.name }}</div>
+                    <div class="van-multi-ellipsis--l2" style="width: 50vw">{{ item.name }}</div>
                     <div class="albumName">
-                      <div class="van-multi-ellipsis--l2">{{ item['al'].name }}</div>
+                      <div class="van-multi-ellipsis--l2" style="width: 50vw">{{ item['al'].name }}</div>
                     </div>
                   </div>
                   <div class="other" @click="choseSongeItem(item, index)">
