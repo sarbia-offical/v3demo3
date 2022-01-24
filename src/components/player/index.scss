@@ -56,7 +56,7 @@
       margin-top: .3rem;
       .songName{
         font-family: hyxhkj;
-        font-size: 0.75rem;
+        font-size: 0.5rem;
         text-align: center;
         .playMode{
           width: 1.8rem;
@@ -68,14 +68,27 @@
           border-radius: .1rem;
         }
       }
-      .singers{
+      .songDetail{
         margin-top: .3rem;
         color: #888888;
         @include aic_jcc();
         font-size: .3rem;
-        div ~ div{
-          margin-left: .2rem;
+        width: 95vw;
+        .singers{
+          flex: 0 0 40%;
+          @include aic_jcc();
+          justify-content: flex-end;
+          overflow: hidden;
+          .singer{
+            max-width: 1.25rem;
+          }
+          .singer ~ .singer{
+            margin-left: .2rem;
+          }
         }
+        .album{
+          flex: 0 0 60%;
+        } 
       }
     }
     .tools {

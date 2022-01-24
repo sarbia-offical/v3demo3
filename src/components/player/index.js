@@ -5,7 +5,7 @@ import ImgPopup from '@/components/imgPopup/index.vue';
 import constant from '@/assets/js/constant';
 import util from '../../assets/js/util';
 import progressBar from '@/components/progressBar/index.vue'
-import userLyric from "./user-lyric";
+import useLyric from "./use-lyric";
 export default defineComponent({
   name: "Player",
   components: {
@@ -20,6 +20,7 @@ export default defineComponent({
     const show = ref(false);
     const durationText = ref({});
     const currentTimeText = ref({});
+    const currenTime = ref('');
     const duration = ref(0);
     const process = ref(0);
     const processFlag = ref(false);
@@ -66,6 +67,7 @@ export default defineComponent({
       audioEle.src = res.data[0].url;
       if(playing.value){
         audioEle.play();
+        lyricHooks.playLyric();
       }
     });
 
@@ -73,6 +75,7 @@ export default defineComponent({
       const audioEle = audioRef.value;
       if(newVal){
         audioEle.play();
+        lyricHooks.playLyric();
       }
     })
 
@@ -82,10 +85,8 @@ export default defineComponent({
           audioEle.play();
       }
     })
-
     // hooks
-    userLyric();
-
+    const lyricHooks = useLyric(currenTime);
     // methods
     // 缩小事件
     const small = () => {
@@ -139,11 +140,11 @@ export default defineComponent({
         'minutes': minutes,
         'second': second
       }
+      currenTime.value = e.target.currentTime;
     }
     // 播放歌曲
     const playMusic = () => {
       const audioEle = audioRef.value;
-      console.log(audioEle.paused);
       if(!store.state.playing){
         audioEle.play();
       } else {
@@ -160,7 +161,6 @@ export default defineComponent({
     const durationChange = () => {
       const audioEle = audioRef.value;
       const durationx = audioEle.duration;
-      console.log(durationx);
       let minutes = util.buling(parseInt(durationx / 60));
       let second = util.buling(parseInt(durationx % 60));
       durationText.value = {
@@ -191,7 +191,6 @@ export default defineComponent({
     }
     // 进度条停止拖动
     const progressTouchEnd = process => {
-      console.log(process);
       const audioEle = audioRef.value;
       audioEle.currentTime = duration.value * process;
       if(!playing.value){

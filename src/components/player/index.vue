@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-12-02 08:24:57
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-05 10:09:05
+ * @LastEditTime: 2022-01-21 15:41:58
 -->
 <template>
   <div v-show="fullScreen">
@@ -39,14 +39,17 @@
             {{ playMode == 0 ? '顺序播放' : playMode == 1 ? '单曲循环' : '随机播放' }}中...
           </div>
         </div>
-        <div class="singers">
-          <div
-            v-for="(item, index) in currentSongs.ar"
-            :key="index"
-            class="singer">
-            {{ item.name }}
-          </div> &nbsp;/
-          <div>
+        <div class="songDetail">
+          <div class="singers"> 
+            <div
+              v-for="(item, index) in currentSongs.ar"
+              :key="index"
+              class="singer van-ellipsis">
+              {{ item.name }}
+            </div> &nbsp;
+          </div>
+          /
+          <div class="album van-ellipsis" style="width: 50%">
             专辑：{{ currentSongs['al']?.name }}
           </div>
         </div>
