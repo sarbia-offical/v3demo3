@@ -88,9 +88,11 @@ export default class Lyric {
   }
 
   _playRest() {
+    console.log(this.lines);
     let line = this.lines[this.curNum]
-    let delay = line.time - (+new Date() - this.startStamp)
-
+    // 算出已经经过的时间，用time去减去已经经过的时间得出定时器需要定时的时间
+    let delay = line.time - (+new Date() - this.startStamp);
+    console.log(line.time);
     this.timer = setTimeout(() => {
       this._callHandler(this.curNum++)
       if (this.curNum < this.lines.length && this.state === STATE_PLAYING) {
@@ -105,10 +107,9 @@ export default class Lyric {
     }
     this.state = STATE_PLAYING
 
-    this.curNum = this._findCurNum(startTime)
-    console.log(this.curNum);
+    this.curNum = this._findCurNum(startTime);
     this.startStamp = +new Date() - startTime
-
+    console.log(this.startStamp);
     if (!skipLast) {
       this._callHandler(this.curNum - 1)
     }

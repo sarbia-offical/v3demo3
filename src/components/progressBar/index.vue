@@ -34,8 +34,6 @@ export default defineComponent({
   emits: ['touchMove', 'touchEnd'],
   setup(props, { emit }) {
     const transformX = ref(0);
-    console.log('进入');
-    console.log(props);
     const progressBar = ref(null);
     const progress = ref(null);
     const progressTransform = ref({});

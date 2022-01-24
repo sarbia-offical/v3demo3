@@ -10,12 +10,18 @@ import { watch, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import Player from "@/service/player.service";
 import util from '@/assets/js/util.js';
-import Lyric from '@/assets/js/user-lyric.js';
-export default function userLycis(){
+import Lyric from '@/assets/js/lyric.js';
+export default function useLycis(currentTime){
+    // ref
     const lyrics = ref([]);
+    const currentLyric = ref(null);
+    ref();
+    // vuex
     const store = useStore();
+    // computed
     const currentSongs = computed(() => store.getters.getCurrentSongs);
     const fullScreen = computed(() => store.state.fullScreen);
+    // 歌词缓存
     const lyricMap = {};
     watch(currentSongs, async (newVal, oldVal) => {
         if(!fullScreen.value){
@@ -24,7 +30,7 @@ export default function userLycis(){
         let songId = newVal.id;
         if(!!lyricMap[songId]){
             lyrics.value = util.formatLyric(lyricMap[songId]);
-            return;
+            playLyric();
         }
         const { id } = newVal;
         const { lrc, code } = await Player.getSongLyric( { id } );
@@ -33,21 +39,35 @@ export default function userLycis(){
                 lyric: lrc.lyric,
                 songName: newVal.name
             }
-            const newLyric = new Lyric(lrc.lyric);
-            newLyric.seek();
+            currentLyric.value = new Lyric(lrc.lyric, handleFunc);
+            console.log(currentLyric.value);
             lyrics.value = util.formatLyric(lrc.lyric);
-            store.commit('saveLyric',{ lyric: lrc.lyric, song: newVal })
+            store.commit('saveLyric',{ lyric: lrc.lyric, song: newVal });
+            playLyric();
         }
+        console.log(lyrics.value);
     });
-    function getLyricIndex(currentTime){
-        let min = currentTime / 60;
-        let sec = currentTime % 60;
-        let _lyrics =lyrics.value;
-        // _lyrics.forEach(ele => {
-
-        // })
+    function playLyric(){
+        // 1、先根据时间找出歌词
+        let index = getLyricIndex(lyrics, currentTime.value * 1000);
+        
+        console.log(index);
+    }
+    function getLyricIndex(lyrics, currentTime){
+        if(!!!lyrics.value || lyrics.value.length == 0){
+            return 0;
+        }
+        for(let i = 0; i < lyrics.value.length; i++){
+            if(currentTime <= lyrics.value[i].time){
+                return i;
+            }
+        }
+        return lyrics.value.length - 1;
+    }
+    function handleFunc(obj){
+        console.log(obj);
     }
     return {
-        getLyricIndex
+        playLyric
     }
 }
