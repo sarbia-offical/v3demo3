@@ -79,9 +79,6 @@
           @include aic_jcc();
           justify-content: flex-end;
           overflow: hidden;
-          .singer{
-            max-width: 1.25rem;
-          }
           .singer ~ .singer{
             margin-left: .2rem;
           }

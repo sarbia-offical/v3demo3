@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2022-01-10 10:04:21
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-21 20:54:01
+ * @LastEditTime: 2022-02-08 11:58:10
  */
 import { watch, computed, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -15,7 +15,6 @@ export default function useLycis(currentTime){
     // ref
     const lyrics = ref([]);
     const currentLyric = ref(null);
-    ref();
     // vuex
     const store = useStore();
     // computed
@@ -30,6 +29,7 @@ export default function useLycis(currentTime){
         let songId = newVal.id;
         if(!!lyricMap[songId]){
             lyrics.value = util.formatLyric(lyricMap[songId]);
+            currentLyric.value = new Lyric(lyrics.value, handleFunc);
             playLyric();
         }
         const { id } = newVal;
@@ -40,29 +40,19 @@ export default function useLycis(currentTime){
                 songName: newVal.name
             }
             currentLyric.value = new Lyric(lrc.lyric, handleFunc);
-            console.log(currentLyric.value);
             lyrics.value = util.formatLyric(lrc.lyric);
+            console.log(lyrics.value);
             store.commit('saveLyric',{ lyric: lrc.lyric, song: newVal });
             playLyric();
         }
         console.log(lyrics.value);
     });
     function playLyric(){
+        let lyricInstance = currentLyric.value
         // 1、先根据时间找出歌词
-        let index = getLyricIndex(lyrics, currentTime.value * 1000);
-        
-        console.log(index);
-    }
-    function getLyricIndex(lyrics, currentTime){
-        if(!!!lyrics.value || lyrics.value.length == 0){
-            return 0;
+        if(!!lyricInstance){
+            lyricInstance.seek(currentTime.value);
         }
-        for(let i = 0; i < lyrics.value.length; i++){
-            if(currentTime <= lyrics.value[i].time){
-                return i;
-            }
-        }
-        return lyrics.value.length - 1;
     }
     function handleFunc(obj){
         console.log(obj);
