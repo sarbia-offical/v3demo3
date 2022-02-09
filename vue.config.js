@@ -4,7 +4,7 @@
  * @Author: zouwenqin
  * @Date: 2021-09-16 09:17:51
  * @LastEditors: zouwenqin
- * @LastEditTime: 2021-10-12 00:20:36
+ * @LastEditTime: 2022-02-09 14:57:09
  */
 // const port = '3000';
 // const registerRouter = require('./backend/router');
@@ -26,7 +26,7 @@ module.exports = {
         port: 3000,
         proxy: {
             [process.env.VUE_APP_BASE_API]: {
-                target: `${process.env["VUE_APP_SERVE_REQUESTTYPE"]}${process.env["VUE_APP_SERVE_REQUESTURL"]}:${process.env["VUE_APP_SERVE_REQUESTPORT"]}`,
+                target: `${process.env["VUE_APP_SERVE_REQUESTURL"]}`,
                 changeOrigin: true,
                 pathRewrite: {
                     [`^${process.env.VUE_APP_BASE_API}`]: ''

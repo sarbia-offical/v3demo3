@@ -4,7 +4,7 @@
  * @Author: zouWenQin
  * @Date: 2021-08-17 15:41:47
  * @LastEditors: zouwenqin
- * @LastEditTime: 2022-01-13 11:37:41
+ * @LastEditTime: 2022-02-09 15:07:50
  */
 const axios = require('axios');
 import constant from '@/assets/js/constant';
@@ -20,6 +20,7 @@ export default class {
      */    
     public static inital(): any {
         this.axiosFactory = !this.axiosFactory ? axios.create({
+            baseUrl: process.env.VUE_APP_SERVE_REQUESTURL,
             timeout: 15000
         }) : this.axiosFactory as any;
         this.axiosFactory.interceptors.response.use((response: any) => {
