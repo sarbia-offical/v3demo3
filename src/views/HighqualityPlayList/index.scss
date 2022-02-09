@@ -1,0 +1,20 @@
+.singers {
+  .mouse-wheel-wrapper{
+    height: 25rem;
+    overflow: hidden;
+    .mouse-wheel-item{
+      width: 7.5rem;
+      height: 3.125rem;
+      line-height: 3.125rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+      &:nth-child(2n){
+        background-color: #c3d899;
+      }
+      &:nth-child(2n+1){
+        background-color: #f2d4a7;
+      }
+    }
+  }
+}

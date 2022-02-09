@@ -1,0 +1,99 @@
+.home{
+  position: relative;
+  .leftPopup{
+    background-color: #fffbf2;
+  }
+  .circle-ball{
+    width: 0.625rem;
+    height: 0.625rem;
+    position: fixed;
+    left: 7rem;
+    top: 3rem;
+    border-radius: 50%;
+    @include shadow();
+    z-index: 99999;
+  }
+  .searchInput{
+    margin-top: 2.25rem;
+    width: 100vw;
+    position: relative;
+    z-index: 99;
+    .inputBlock{
+      height: 1rem;
+      width: 90%;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      -webkit-box-reflect: below 1px -webkit-gradient(linear, left top, left bottom, from(hsla(0, 100%, 100%, 0.102)), to(hsla(0, 0%, 100%, 0.1)));
+      border-bottom: 2px solid #b79d9d;
+      border-right: 2px solid #b79d9d;
+      @include aic_jcc();
+      .choseType{
+        width: 12%;
+        height: 100%;
+        @include aic_jcc();
+      }
+      .other{
+        flex: 1;
+        height: 100%;
+        @include aic_jcc();
+        justify-content: space-evenly;
+        input{
+          font-size: 12px;
+          color: #666666;
+          height: 100%; 
+          width: 70%;
+        }
+        .btn{
+          flex: .8;
+          height: 70%;
+          @include aic_jcc();
+          font-size: 15px;
+          background-color: #0ed80e;
+          color: #ffffff;
+          border-radius: 5px;
+          box-shadow: 3px 3px 5px #e0d3d3;
+        }
+        .btn:active{
+          background-color: #188618;
+        }
+      }
+    }
+  }
+  .history{
+    width: 90vw;
+    height: 30vh;
+    margin: 0 auto;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    background-color: #ffffff;
+    font-size: 13px;
+    .tags{
+      @include aic_jcc();
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      padding-bottom: .3rem;
+      .tag{
+        height: .2rem;
+        padding: .1rem;
+        flex: 0 0 5%;
+        text-align: center;
+        @include aic_jcc();
+        background-color: #ffffff;
+        box-shadow: 3px 3px 0px 0px #c3b7b7;
+        margin-left: .1rem;
+        margin-right: .1rem;
+        margin-top: .1rem;
+        color: #afaaaa;
+        cursor: pointer;
+        transition: all .4s ease-in-out;
+      }
+      .tag:active{
+        background-color: #cac1c1;
+      }
+    }
+  }
+}

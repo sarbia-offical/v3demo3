@@ -1,0 +1,66 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: zouwenqin
+ * @Date: 2021-12-07 09:47:34
+ * @LastEditors: zouwenqin
+ * @LastEditTime: 2022-01-12 17:26:47
+-->
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_2644166_wh7kddtcrvq.css">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+        (function(){
+            if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+                handleFontSize();
+            } else {
+                document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+            }
+            function handleFontSize() {
+                console.log(WeixinJSBridge);
+                // 设置网页字体为默认大小
+                WeixinJSBridge.invoke("setFontSizeCallback", { fontSize: 0 });
+                // 重写设置网页字体大小的事件
+                WeixinJSBridge.on("menu:setfont", function() {
+                    WeixinJSBridge.invoke("setFontSizeCallback", { fontSize: 0 });
+                });
+            }
+        })()
+    </script>
+    <script src="<%= BASE_URL %>js/rem.js"></script>
+    <script src="<%= BASE_URL %>js/ThreeWebGL.js"></script>
+    <script src="<%= BASE_URL %>js/ThreeExtras.js"></script>
+    <script src="<%= BASE_URL %>js/RequestAnimationFrame.js"></script>
+    <script id="vs" type="x-shader/x-vertex">
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+  
+      }
+    </script>
+    <script id="fs" type="x-shader/x-fragment">
+      uniform sampler2D map;
+      uniform vec3 fogColor;
+      uniform float fogNear;
+      uniform float fogFar;
+      varying vec2 vUv;
+      void main() {
+        float depth = gl_FragCoord.z / gl_FragCoord.w;
+        float fogFactor = smoothstep( fogNear, fogFar, depth );
+        gl_FragColor = texture2D( map, vUv );
+        gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+        gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+      }
+    </script>
+  </body>
+</html>

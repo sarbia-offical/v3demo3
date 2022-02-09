@@ -1,0 +1,126 @@
+.searchPage {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+
+    .tips {
+        font-size: .3rem;
+        color: #969696;
+        margin-top: .3rem;
+    }
+
+    .singer-container,
+    .album-container,
+    .songs-container {
+        width: 90%;
+        margin: 0 auto;
+        overflow: hidden;
+        .scroll-wrapper {
+            position: relative;
+            margin-top: .1rem;
+            white-space: nowrap;
+            .scroll-content {
+                display: inline-block;
+                overflow: hidden;
+                .scroll-item {
+                    display: inline-block;
+                    text-align: center;
+                    .singer-avatar {
+                        @include aic_jcc();
+                        height: 2rem;
+                        width: 2rem;
+                        background-color: #e5dede;
+                        border-radius: 5px;
+                        overflow: hidden;
+                        .pic {
+                            img {
+                                width: 100%;
+                            }
+                        }
+                    }
+                    .singer-avatar2 {
+                        @include aic_jcc();
+                        height: 1.4rem;
+                        width: 1.4rem;
+                        .pic {
+                            padding-top: .1rem;
+                            img {
+                                width: 100%;
+                                border-radius: 50%;
+                                overflow: hidden;
+                            }
+                        }
+                    }
+                    .text {
+                        margin-left: .1rem;
+                        font-size: .3rem;
+                        text-align: left;
+                        div {
+                            margin-top: .1rem;
+                        }
+                    }
+                }
+
+                .scroll-item~.scroll-item {
+                    margin-left: .3rem;
+                }
+            }
+        }
+    }
+    .songs-container{
+        flex: 1;
+        .songsScroll {
+            margin-top: .2rem;
+            width: 95vw;
+            height: 90%;
+            overflow: hidden;
+            .songsScroll-content {
+                .songs-item~.songs-item {
+                    margin-top: .5rem;
+                }
+                .songs-item {
+                    color: $explain-text-color;
+                    display: flex;
+                    align-items: center;
+                    .pic {
+                        img {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                        }
+                    }
+                    .singer {
+                        font-size: .3rem;
+                        margin-left: .3rem;
+                        width: 65%;
+                        .albumName {
+                            margin-top: .2rem;
+                            font-size: .2rem;
+                            display: inline-block;
+                        }
+                    }
+                    .other {
+                        flex: 1;
+                        .loadMore {
+                            width: .6rem;
+                            height: .6rem;
+                            background-color: #f2d4a7;
+                            @include aic_jcc();
+                            @include shadow2-1();
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .singer-container {
+        margin-top: .3rem;
+    }
+}
